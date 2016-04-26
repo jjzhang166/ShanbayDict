@@ -1,0 +1,22 @@
+#ifndef APPLICATION_H
+#define APPLICATION_H
+#include <QDebug>
+#include <memory>
+#include <src/net/shanbaynet.h>
+#include "gui/Gui.h"
+
+class Application
+{
+public:
+    explicit Application();
+public:
+    void init();
+    void run();
+};
+
+namespace DICT{
+    extern std::unique_ptr<Application> app;
+    extern std::unique_ptr<Gui> gui;
+    extern std::unique_ptr<ShanbayNet> shanbayNet;
+}
+#endif // APPLICATION_H
