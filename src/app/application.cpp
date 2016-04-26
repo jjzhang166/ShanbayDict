@@ -81,10 +81,10 @@ void Application::init(){
     });
 
 
-    QObject::connect(DICT::gui.get(),&Gui::signalClosing,
+    QObject::connect(qApp,&QApplication::aboutToQuit,
                      [&](){
-       qDebug()<< "closing";
-       dictMenu->deleteLater();
+        qDebug()<< "application closing";
+        dictMenu->deleteLater();
     });
 }
 

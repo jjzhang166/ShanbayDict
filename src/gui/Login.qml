@@ -9,11 +9,6 @@ Window {
     objectName: "Login Window"
     signal signalLoginClick(string name,string pass,string captchacode)
     signal signalFreshCaptchaImg()
-    signal signalClosing()
-    onClosing: {
-        console.log("OnClosing fired");
-        signalClosing();
-    }
     function setState(msg) {
         console.log("QML received: " + msg);
         loginForm.captcha_code.text = "";

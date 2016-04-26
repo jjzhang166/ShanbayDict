@@ -14,8 +14,6 @@ void Gui::init(){
 
     //loginWin->setFlags(Qt::FramelessWindowHint);
     //qDebug()<<engine.rootObjects().size()<<loginWin->objectName();
-    QObject::connect(loginWin,SIGNAL(signalClosing()),
-                     this,SIGNAL(signalClosing()));
 
     QObject::connect(loginWin, SIGNAL(signalLoginClick(QString,QString,QString)),
                      this, SIGNAL(signalLoginClick(QString,QString,QString)));
