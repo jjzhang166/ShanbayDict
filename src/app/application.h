@@ -2,6 +2,7 @@
 #define APPLICATION_H
 #include <QDebug>
 #include <memory>
+#include <QSystemTrayIcon>
 #include <src/net/shanbaynet.h>
 #include "gui/Gui.h"
 
@@ -12,6 +13,8 @@ public:
 public:
     void init();
     void run();
+private:
+    QSystemTrayIcon* trayIcon;
 };
 
 namespace DICT{

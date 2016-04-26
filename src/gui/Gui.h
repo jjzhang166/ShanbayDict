@@ -12,6 +12,7 @@ public:
 
 signals:
     //win send signal to outer
+    void signalClosing();
     void signalLoginClick(QString,QString,QString);
     void signalFreshCaptchaImg();
 

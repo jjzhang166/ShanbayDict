@@ -12,9 +12,11 @@ void Gui::init(){
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/Login.qml")));
     loginWin = qobject_cast<QWindow*>(engine->rootObjects().at(0));
 
-
     //loginWin->setFlags(Qt::FramelessWindowHint);
     //qDebug()<<engine.rootObjects().size()<<loginWin->objectName();
+    QObject::connect(loginWin,SIGNAL(signalClosing()),
+                     this,SIGNAL(signalClosing()));
+
     QObject::connect(loginWin, SIGNAL(signalLoginClick(QString,QString,QString)),
                      this, SIGNAL(signalLoginClick(QString,QString,QString)));
     QObject::connect(loginWin,SIGNAL(signalFreshCaptchaImg()),
