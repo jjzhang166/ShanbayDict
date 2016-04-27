@@ -2,6 +2,7 @@ import QtQuick 2.6
 import QtQuick.Window 2.2
 
 Window {
+    id: window
     visible: false
     title:"Login Dialog"
     width:500
@@ -17,14 +18,12 @@ Window {
     }
     function showCaptchaImg(url){
         console.log("captcha_imd url:"+url);
-
         if(url.length>0){
             loginForm.row1.visible=true;
             loginForm.captcha_img.source=url;
         }else{
             loginForm.row1.visible=false;
         }
-
     }
 
     LoginForm {
@@ -37,6 +36,10 @@ Window {
         captcha_img_mousearea.onClicked: {
             signalFreshCaptchaImg();
         }
+        checkBox_savepass.onCheckedChanged: {
+            configs.setSavepass(checkBox_savepass.checkedState);
+        }
+
         Keys.onPressed: {
             if(username.focus) {
                 password.forceActiveFocus();
@@ -54,6 +57,9 @@ Window {
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2);
         setY(Screen.height / 2 - height / 2);
+        loginForm.username.text = configs.getUsername();
+        loginForm.password.text = configs.getUserpass();
+        loginForm.checkBox_savepass.checked=configs.isSavepass();
     }
 
 }

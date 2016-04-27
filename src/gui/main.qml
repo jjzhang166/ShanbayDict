@@ -1,11 +1,12 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtMultimedia 5.6
-
+import Qt.labs.settings 1.0
 Window {
+    id: window
     visible: false
-    width: 630
-    height: 360
+    width: 800
+    height: 600
     property var voc
     signal signalBtnqueryClick(string word)
     signal signalBtnaddwordClick(string type,string id)
@@ -30,7 +31,7 @@ Window {
     }
 
     function showWord(wordstr){
-        console.log("wordstr:"+wordstr);
+        //console.log("wordstr:"+wordstr);
         var json = JSON.parse(wordstr);
         if(json.status_code !== 0 ){
             mainForm.word_name.text = mainForm.textWord.text+" not found." + json.msg;
@@ -39,37 +40,35 @@ Window {
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
             return;
         }
+        window.visible = true;
         mainForm.btn_addword.visible = true;
-        mainForm.pronu_uk.visible = true;
+        mainForm.pronu_us.visible = true;
         mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = true;
         voc = json.data;
         updateBtnaddword(voc.learning_id);
         mainForm.word_name.text = voc.content;
-        for(var p in voc.pronunciations){
-            console.log("pronunciations:"+ p + " "+voc.pronunciations[p]);
-
-        }
         mainForm.pronu_uk.text = "/"+voc.pronunciations.uk+"/";
         mainForm.pronu_us.text = "/"+voc.pronunciations.us+"/";
         if(voc.has_audio){
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = true;
             playSound0.source = voc.uk_audio;
             playSound1.source = voc.us_audio;
+            if(configs.isAutospeak()) playSound1.play();
         }else{
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
         }
         var def_en_info = "";
         for(var pos in voc.en_definitions){
-            console.log(pos);
+            //console.log(pos);
             def_en_info += "<strong>"+pos +":</strong><br>";
             var defs=voc.en_definitions[pos];
             for(var i=0;i<defs.length;i++){
                 def_en_info += "<b>"+(i+1) + ".</b>" + defs[i] +"<br>";
             }
-            console.log(def_en_info);
+            //console.log(def_en_info);
         }
         mainForm.text_def.text = voc.definition+ "<br>" +def_en_info;
-        console.log("wordinfo.definition:"+voc.definition);
+        //console.log("wordinfo.definition:"+voc.definition);
     }
     Audio {
             id: playSound0
@@ -100,17 +99,19 @@ Window {
             }
 
             btn_sound0.onClicked: {
-                console.log(mainForm.height+"  "+view.contentHeight)
+                //console.log(mainForm.height+"  "+view.contentHeight)
                 playSound0.play();
             }
             btn_sound1.onClicked: {
                 playSound1.play();
             }
             Keys.onPressed: {
-                console.log(event.key + "enterrrrrrrrrrrrrrrrrrrrrrrrrrrr")
-                if(textWord.focus) {
-                    signalBtnqueryClick(textWord.text);
-                    return;
+                console.log(event.key + "enterrrrrrrrrrrrrrrrrrrrrrrrrrrr"+Qt.Key_Enter +" "+Qt.Key_Return)
+                if(event.key === Qt.Key_Enter || event.key === Qt.Key_Return){
+                    if(textWord.focus) {
+                        signalBtnqueryClick(textWord.text);
+                        return;
+                    }
                 }
             }
             Component.onCompleted: {
@@ -157,7 +158,8 @@ Window {
         mainForm.word_name.text = "";
         mainForm.text_def.text = "";
         mainForm.btn_addword.visible = false;
-        mainForm.pronu_uk.visible = false;
+        mainForm.pronu_us.visible = false;
         mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
+        console.log("main window"+configs.value("getscreentext"));
     }
 }

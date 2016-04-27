@@ -10,23 +10,24 @@ Rectangle {
     property alias btn_sound0: btn_sound0
     property alias btn_sound1: btn_sound1
     property alias word_name: word_name
-    property alias pronu_us: pronu_us
-    property alias pronu_uk: pronu_uk
     property alias text_def: text_def
     property alias btn_addword: btn_addword
     //anchors.fill: parent
 
     radius: 2
+    property alias pronu_uk: pronu_uk
+    property alias pronu_us: pronu_us
     //color: "#ffffff"
     TextField {
         id: textWord
         x: 8
         y: 17
         width: 360
-        height: 32
+        height: 30
         text: "good"
+        opacity: 0.9
         font.pointSize: 18
-        placeholderText: qsTr("Text Field")
+        placeholderText: qsTr("Word Field")
     }
     Button {
         id: btn_query
@@ -53,15 +54,15 @@ Rectangle {
             font.pixelSize: 18
         }
         Text {
-            visible: pronu_uk.visible
-            text: qsTr("US:")
+            visible: pronu_us.visible
+            text: qsTr("UK:")
             font.italic: true
             font.bold: false
             font.pixelSize: 12
         }
         Text {
-            id: pronu_us
-            visible: pronu_uk.visible
+            id: pronu_uk
+            visible: pronu_us.visible
             color: "gray"
             text: qsTr("/ɡʊd/")
             font.pixelSize: 12
@@ -73,14 +74,14 @@ Rectangle {
             iconSource: "qrc:/img/sound0.ico"
         }
         Text {
-            visible: pronu_uk.visible
-            text: qsTr("UK:")
+            visible: pronu_us.visible
+            text: qsTr("US:")
             font.italic: true
             font.bold: true
             font.pixelSize: 12
         }
         Text {
-            id: pronu_uk
+            id: pronu_us
             color: "gray"
             text: qsTr("/ɡʊd/")
             font.bold: true
@@ -98,7 +99,7 @@ Rectangle {
         id: text_def
         x: 8
         y: 95
-        width: 601
+        width: 780
         //height: 77
         text: qsTr("word definition")
         textFormat: Text.RichText
@@ -110,6 +111,8 @@ Rectangle {
         id: btn_addword
         x: 579
         y: 57
+        anchors.right: parent.right
+        anchors.rightMargin: 31
         tooltip: qsTr("添加进生词库，加入背单词计划")
         iconSource: "qrc:/img/addword1.ico"
     }

@@ -283,7 +283,7 @@ void ShanbayNet::httpfinished(QNetworkReply* reply){
         }
         break;
     case HttpAction::QueryWordAction:
-        qDebug()<<"query word";
+        //qDebug()<<"query word";
         //jsondata=jsonParser->parse(reply->readAll(),&jsonok);
         //jsonDoc=QJsonDocument::fromJson(replData);
         emit signalRetWordinfo(QString::fromUtf8(replData));

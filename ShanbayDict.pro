@@ -1,7 +1,7 @@
 TARGET = ShanbayDict
 TEMPLATE = app
 
-QT += widgets qml quick multimedia
+QT += widgets qml multimedia
 CONFIG += c++14
 
 RESOURCES += qml.qrc icons.qrc
@@ -20,11 +20,13 @@ SOURCES += \
     src/app/main.cpp \
     src/net/shanbaynet.cpp \
     src/app/application.cpp \
-    src/gui/Gui.cpp
+    src/gui/Gui.cpp \
+    src/app/config.cpp
 HEADERS  += \
     src/net/shanbaynet.h \
     src/app/application.h \
-    src/gui/Gui.h
+    src/gui/Gui.h \
+    src/app/config.h
 
 win32{
 

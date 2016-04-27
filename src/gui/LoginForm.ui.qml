@@ -12,6 +12,7 @@ Item {
     property alias captcha_code:captcha_code
     property alias captcha_img:captcha_img
     property alias captcha_img_mousearea:captcha_img_mousearea
+    property alias checkBox_savepass: checkBox_savepass
     property alias row1:row1
     Label {
         id: label1
@@ -52,7 +53,7 @@ Item {
         width: 180
         height: 41
         text: ""
-        echoMode: 0
+        echoMode: 2
         placeholderText: qsTr("your password")
     }
 
@@ -79,10 +80,6 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 width: 210
                 placeholderText: qsTr("点击图片换一幅")
-            }
-            Flickable {
-                width: 30
-                height: 1
             }
             Image {
                 id: captcha_img
@@ -121,11 +118,25 @@ Item {
         }
         Row {
             id: row3
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            CheckBox {
+                id: checkBox_savepass
+                text: qsTr("记住密码")
+                checked: true
+            }
+        }
+        Row {
+            id: row4
             Label {
                 id: labelState
-                color: "#b30707"
-                text: qsTr("Label")
+                color: "#0a3ea2"
+                text: qsTr("Label state")
+                style: Text.Normal
+                font.bold: true
+                font.pointSize: 12
             }
         }
     }
+
+
 }

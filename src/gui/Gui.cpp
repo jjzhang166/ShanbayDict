@@ -1,5 +1,7 @@
 #include "Gui.h"
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <app/application.h>
 
 
 Gui::Gui(QObject *parent) : QObject(parent)
@@ -9,8 +11,12 @@ Gui::Gui(QObject *parent) : QObject(parent)
 void Gui::init(){
 
     engine = new QQmlApplicationEngine();
+    QQmlContext *context = engine->rootContext();
+    context->setContextProperty("configs", DICT::config.get());
+
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/Login.qml")));
     loginWin = qobject_cast<QWindow*>(engine->rootObjects().at(0));
+
 
     //loginWin->setFlags(Qt::FramelessWindowHint);
     //qDebug()<<engine.rootObjects().size()<<loginWin->objectName();
