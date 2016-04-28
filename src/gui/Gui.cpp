@@ -43,6 +43,11 @@ void Gui::init(){
     QObject::connect(this,SIGNAL(signalAddwordRet(QVariant)),
                      mainWin,SLOT(addWordRet(QVariant)));
 
+    engine->load(QUrl(QStringLiteral("qrc:/src/gui/Balloon.qml")));
+    balloonWin = qobject_cast<QWindow*>(engine->rootObjects().at(2));
+    QObject::connect(this,SIGNAL(signalShowWordInBalloon(QVariant)),
+                     balloonWin,SLOT(showWord(QVariant)));
+
 }
 //loginWin
 void Gui::showCaptchaImg(const QString &url){
@@ -61,4 +66,11 @@ void Gui::showWord(const QString &wordinfo){
 }
 void Gui::addWordRet(const QString &data){
     emit signalAddwordRet(data);
+}
+
+void Gui::showWordInBalloon(const QString &wordinfo){
+    balloonWin->setPosition(QCursor::pos()+QPoint(10,15));
+    balloonWin->show();
+    emit signalShowWordInBalloon(wordinfo);
+
 }

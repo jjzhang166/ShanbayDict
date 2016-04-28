@@ -24,6 +24,8 @@ signals:
     void signalShowWord(const QVariant& wordinfo) const;
     void signalAddwordRet(const QVariant& data) const;
 
+    void signalShowWordInBalloon(const QVariant& wordinfo) const;
+
 public slots:
 public:
     void init();
@@ -33,8 +35,11 @@ public:
 
     void showWord(const QString& wordinfo);
     void addWordRet(const QString& data);
+
+    void showWordInBalloon(const QString& wordinfo);
     QWindow* loginWin;
     QWindow* mainWin;
+    QWindow* balloonWin;
 private:
     QQmlApplicationEngine *engine;
 };

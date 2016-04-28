@@ -9,7 +9,7 @@
 #include "gui/Gui.h"
 #include "config.h"
 #include "dictlogo.h"
-
+enum class ShowType{balloon,main};
 class Application
 {
 public:
@@ -25,6 +25,7 @@ public:
 
 private:
     QString capture_text;
+    ShowType showType;
     QSystemTrayIcon* trayIcon=nullptr;
     QMenu *dictMenu;
     QAction *showMainWinAction;

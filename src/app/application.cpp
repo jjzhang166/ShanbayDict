@@ -15,11 +15,14 @@ Application::Application(){
 }
 
 void Application::init(){
+
     DICT::logo = new Dictlogo();
     QObject::connect(DICT::logo,&Dictlogo::Clicked,
                      [&](){
+        qDebug()<<"logo clicked:"<<capture_text;
         DICT::shanbayNet->queryWord(capture_text);
     });
+
     DICT::gui->init();
 
     DICT::shanbayNet->connect();
@@ -63,11 +66,16 @@ void Application::init(){
 
     QObject::connect(DICT::gui.get(),&Gui::signalBtnqueryClick,
                      [&](const QString word){
+        showType = ShowType::main;
         DICT::shanbayNet->queryWord(word);
     });
     QObject::connect(DICT::shanbayNet.get(),&ShanbayNet::signalRetWordinfo,
                      [&](const QString& wordinfo){
-        DICT::gui->showWord(wordinfo);
+        if(showType == ShowType::main){
+            DICT::gui->showWord(wordinfo);
+        }else{
+            DICT::gui->showWordInBalloon(wordinfo);
+        }
     });
 
     QObject::connect(DICT::gui.get(),&Gui::signalBtnaddwordClick,
@@ -79,7 +87,6 @@ void Application::init(){
         DICT::gui->addWordRet(data);
     });
 
-
     QObject::connect(qApp,&QApplication::aboutToQuit,[&](){close();});
 }
 void Application::close(){
@@ -88,7 +95,8 @@ void Application::close(){
 void Application::showSystrayIcon(){
     if(trayIcon!=nullptr) return;
     trayIcon = new QSystemTrayIcon(QIcon(":/img/logo.png"),qApp);
-    dictMenu = new QMenu("菜单",QApplication::desktop());
+
+    dictMenu = new QMenu("菜单");
     //dictMenu->setLayoutDirection(Qt::LeftToRight);
     showMainWinAction = new QAction(QIcon(":/img/main.ico"),QObject::tr("显示主窗口"),qApp);
     helpAction =new QAction(QIcon(":/img/help.png"),QObject::tr("帮助"),qApp);
@@ -159,6 +167,7 @@ void Application::run(){
 }
 void Application::captureText(QString text){
     capture_text = text;
+    showType = ShowType::balloon;
     if(DICT::config->isShowquerylogo()){
         DICT::logo->popup();
         return;

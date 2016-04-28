@@ -5,5 +5,7 @@
         <file>src/gui/Login.qml</file>
         <file>src/gui/LoginForm.ui.qml</file>
         <file>src/gui/ScrollBar.qml</file>
+        <file>src/gui/Balloon.qml</file>
+        <file>src/gui/BalloonForm.ui.qml</file>
     </qresource>
 </RCC>

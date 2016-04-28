@@ -3,10 +3,8 @@ import QtQuick.Controls 1.5
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
-Rectangle {
-    id: rectangle1
-    property alias textWord: textWord
-    property alias btn_query: btn_query
+Item {
+
     property alias btn_sound0: btn_sound0
     property alias btn_sound1: btn_sound1
     property alias word_name: word_name
@@ -14,37 +12,11 @@ Rectangle {
     property alias btn_addword: btn_addword
     property alias pronu_uk: pronu_uk
     property alias pronu_us: pronu_us
-    //anchors.fill: parent
-
-    radius: 2
-
-    //color: "#ffffff"
-    TextField {
-        id: textWord
-        x: 8
-        y: 17
-        width: 360
-        height: 30
-        text: "good"
-        opacity: 0.9
-        font.pointSize: 18
-        placeholderText: qsTr("Word Field")
-    }
-    Button {
-        id: btn_query
-        x: 380
-        y: 20
-        width: 55
-        height: 27
-        text: qsTr("查询")
-    }
-
-
+    property alias rowLayout_pronu: rowLayout_pronu
     RowLayout {
         id: rowLayout_pronu
         x: 8
-        y: 57
-        width: 180
+        y: 21
         height: 21
         Text {
             id: word_name
@@ -94,27 +66,28 @@ Rectangle {
             height: 16
             iconSource: "qrc:/img/sound1.ico"
         }
+        ToolButton {
+            id: btn_addword
+            tooltip: qsTr("添加进生词库，加入背单词计划")
+            iconSource: "qrc:/img/addword1.ico"
+        }
 
     }
     Text {
         id: text_def
         x: 8
-        y: 95
-        width: 780
+        y: 48
+        width: parent.width -15
         //height: 77
         text: qsTr("word definition")
+        anchors.rightMargin: -8
+        anchors.bottomMargin: -48
+        anchors.leftMargin: 8
+        anchors.topMargin: 48
         textFormat: Text.RichText
         wrapMode: Text.WrapAnywhere
         font.pixelSize: 15
     }
 
-    ToolButton {
-        id: btn_addword
-        x: 579
-        y: 57
-        anchors.right: parent.right
-        anchors.rightMargin: 31
-        tooltip: qsTr("添加进生词库，加入背单词计划")
-        iconSource: "qrc:/img/addword1.ico"
-    }
+
 }
