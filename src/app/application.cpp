@@ -10,13 +10,16 @@ std::unique_ptr<Application> DICT::app = std::make_unique<Application>();
 std::unique_ptr<Gui> DICT::gui = std::make_unique<Gui>();
 std::unique_ptr<ShanbayNet> DICT::shanbayNet = std::make_unique<ShanbayNet>();
 std::unique_ptr<Config> DICT::config = std::make_unique<Config>();
-
-
-
+Dictlogo* DICT::logo;
 Application::Application(){
 }
 
 void Application::init(){
+    DICT::logo = new Dictlogo();
+    QObject::connect(DICT::logo,&Dictlogo::Clicked,
+                     [&](){
+        DICT::shanbayNet->queryWord(capture_text);
+    });
     DICT::gui->init();
 
     DICT::shanbayNet->connect();
@@ -110,7 +113,7 @@ void Application::showSystrayIcon(){
     dictMenu->addAction(quitAction);
 
     trayIcon->setContextMenu(dictMenu);
-
+    QObject::connect(showMainWinAction,&QAction::triggered,[&](){DICT::gui->showMainWin();});
     QObject::connect(autospeakAction,&QAction::toggled,
                      [&](bool checked){
         DICT::config->setAutospeak(checked);
@@ -131,6 +134,7 @@ void Application::showSystrayIcon(){
         case QSystemTrayIcon::Trigger:
         case QSystemTrayIcon::DoubleClick:
             qDebug()<<"DoubleClick";
+            DICT::gui->showMainWin();
             break;
         case QSystemTrayIcon::MiddleClick:
             qDebug()<<"MiddleClick";
@@ -153,6 +157,14 @@ void Application::run(){
     DICT::gui->loginWin->show();
     showSystrayIcon();
 }
+void Application::captureText(QString text){
+    capture_text = text;
+    if(DICT::config->isShowquerylogo()){
+        DICT::logo->popup();
+        return;
+    }
+    DICT::shanbayNet->queryWord(capture_text);
+}
 
 void Application::setScreenText(){
     if(!DICT::config->isGetscreentext()){//关闭屏幕取词
@@ -171,7 +183,7 @@ void Application::setScreenText(){
                          [&](){
 
             qDebug()<<"selectionChanged"<<qApp->clipboard()->text(QClipboard::Selection);
-            DICT::shanbayNet->queryWord(qApp->clipboard()->text(QClipboard::Selection));
+            captureText(qApp->clipboard()->text(QClipboard::Selection));
         });
 #endif
     }else{
@@ -186,7 +198,7 @@ void Application::setScreenText(){
         QObject::connect(qApp->clipboard(),&QClipboard::dataChanged,
                          [&](){
             qDebug()<<"dataChanged"<<qApp->clipboard()->text();
-            DICT::shanbayNet->queryWord(qApp->clipboard()->text());
+            captureText(qApp->clipboard()->text());
         });
     }else{
         QObject::disconnect(qApp->clipboard(),&QClipboard::dataChanged,0,0);

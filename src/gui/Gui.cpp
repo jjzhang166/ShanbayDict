@@ -52,6 +52,10 @@ void Gui::setLoginWinState(const QString &str){
     emit signalSetLoginWinState(str);
 }
 //mainWin
+void Gui::showMainWin(){
+    mainWin->show();
+}
+
 void Gui::showWord(const QString &wordinfo){
     emit signalShowWord(wordinfo);
 }

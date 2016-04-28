@@ -39,8 +39,7 @@ Window {
             mainForm.pronu_uk.visible = false;
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
             return;
-        }
-        window.visible = true;
+        }        
         mainForm.btn_addword.visible = true;
         mainForm.pronu_us.visible = true;
         mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = true;
@@ -57,17 +56,20 @@ Window {
         }else{
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
         }
-        var def_en_info = "";
+        var def_en_info = "<table style='background-Color:mintcream' cellSpacing=6>";
         for(var pos in voc.en_definitions){
             //console.log(pos);
-            def_en_info += "<strong>"+pos +":</strong><br>";
+            def_en_info += "<tr><td align='right'><b>"+pos +":<b></td><td>";
             var defs=voc.en_definitions[pos];
             for(var i=0;i<defs.length;i++){
                 def_en_info += "<b>"+(i+1) + ".</b>" + defs[i] +"<br>";
             }
+            def_en_info = def_en_info.substring(0,def_en_info.length-4);
+            def_en_info+="</td></tr>"
             //console.log(def_en_info);
         }
-        mainForm.text_def.text = voc.definition+ "<br>" +def_en_info;
+        def_en_info+="</table>"
+        mainForm.text_def.text =voc.definition+ def_en_info ;
         //console.log("wordinfo.definition:"+voc.definition);
     }
     Audio {
@@ -161,5 +163,10 @@ Window {
         mainForm.pronu_us.visible = false;
         mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
         console.log("main window"+configs.value("getscreentext"));
+    }
+    onClosing:{
+        console.log("main windows is closing");
+        //visible = false;
+        //close.accepted = false;
     }
 }

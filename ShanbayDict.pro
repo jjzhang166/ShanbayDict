@@ -21,12 +21,14 @@ SOURCES += \
     src/net/shanbaynet.cpp \
     src/app/application.cpp \
     src/gui/Gui.cpp \
-    src/app/config.cpp
+    src/app/config.cpp \
+    src/app/dictlogo.cpp
 HEADERS  += \
     src/net/shanbaynet.h \
     src/app/application.h \
     src/gui/Gui.h \
-    src/app/config.h
+    src/app/config.h \
+    src/app/dictlogo.h
 
 win32{
 

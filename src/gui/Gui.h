@@ -28,7 +28,8 @@ public slots:
 public:
     void init();
     void showCaptchaImg(const QString& url);
-    void setLoginWinState(const QString& str);
+    void setLoginWinState(const QString& str);    
+    void showMainWin();
 
     void showWord(const QString& wordinfo);
     void addWordRet(const QString& data);
