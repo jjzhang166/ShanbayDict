@@ -10,7 +10,6 @@ Item {
     property alias btn_register: btn_register
     property alias username: username
     property alias password: password
-    property alias labelState: labelState
     property alias captcha_code:captcha_code
     property alias captcha_img:captcha_img
     property alias captcha_img_mousearea:captcha_img_mousearea
@@ -158,20 +157,5 @@ Item {
                 checked: true
             }
         }
-        Row {
-            id: row4
-            Label {
-                id: labelState
-                color: "#0a3ea2"
-                text: qsTr("Label state")
-                style: Text.Normal
-                font.bold: true
-                font.pointSize: 12
-            }
-        }
     }
-
-
-
-
 }

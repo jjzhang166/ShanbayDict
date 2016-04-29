@@ -1,6 +1,5 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
-
 Window {
     id: window
     visible: false
@@ -15,8 +14,8 @@ Window {
         //console.log("QML received: " + msg);
         if(msg.indexOf("请登录")>0) loginForm.btn_login.enabled = true;
         loginForm.captcha_code.text = "";
-        loginForm.labelState.visible = true;
-        loginForm.labelState.text = msg;
+        winState.visible = true;
+        winState.text = msg;
     }
     function showCaptchaImg(url){
         //console.log("captcha_imd url:"+url);
@@ -32,7 +31,7 @@ Window {
         id: loginForm
         row1.visible: false;
         btn_login.onClicked: {
-            loginForm.labelState.visible=false;
+            winState.visible=false;
             signalLoginClick(username.text,password.text,captcha_code.text);
         }
         btn_register.onClicked: {
@@ -59,6 +58,15 @@ Window {
             }
             signalLoginClick(username.text,password.text,captcha_code.text);
         }
+    }
+    Text {
+        id: winState
+        color: "#0a3ea2"
+        text: qsTr("Label state")
+        anchors.bottom: parent.bottom
+        style: Text.Normal
+        font.bold: true
+        font.pointSize: 12
     }
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2);

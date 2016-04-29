@@ -4,6 +4,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
 Rectangle {
+    id: rectangle1
     radius: 10
     property alias btn_sound0: btn_sound0
     property alias btn_sound1: btn_sound1
@@ -89,4 +90,5 @@ Rectangle {
         wrapMode: Text.WrapAnywhere
         font.pixelSize: 15
     }
+
 }

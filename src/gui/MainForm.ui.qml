@@ -124,5 +124,4 @@ Rectangle {
         font.pixelSize: 15
     }
 
-
 }

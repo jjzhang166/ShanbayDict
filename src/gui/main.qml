@@ -155,6 +155,15 @@ Window {
         position: view.visibleArea.xPosition
         pageSize: view.visibleArea.widthRatio
     }
+    Text {
+        id: winState
+        color: "#0a3ea2"
+        text: qsTr("Label state")
+        anchors.bottom: parent.bottom
+        style: Text.Normal
+        font.bold: true
+        font.pointSize: 12
+    }
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2);
         setY(Screen.height / 2 - height / 2);

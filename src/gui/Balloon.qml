@@ -44,9 +44,12 @@ Window {
         window.height = Math.max(mainForm.text_def.height + 100,180);
     }
     function updateBtnaddword(learning_id){
+        winState.text = "add word state info";
+        winState.visible = true;
         if(learning_id&&learning_id!==0){
             mainForm.btn_addword.iconSource = "qrc:/img/add0.png";
             mainForm.btn_addword.tooltip = qsTr("忘记了，重新加入背单词计划");
+
         }else{
             mainForm.btn_addword.iconSource = "qrc:/img/add1.png";
             mainForm.btn_addword.tooltip = qsTr("添加进生词库，加入背单词计划");
@@ -73,7 +76,15 @@ Window {
     onActiveChanged: {
         console.log("window onActiveChanged"+ active);
         visible = active;
-
+    }
+    Text {
+        id: winState
+        color: "#0a3ea2"
+        text: qsTr("Label state")
+        anchors.bottom: parent.bottom
+        style: Text.Normal
+        font.bold: true
+        font.pointSize: 12
     }
 }
 
