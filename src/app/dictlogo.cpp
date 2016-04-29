@@ -45,7 +45,6 @@ Dictlogo::Dictlogo(QWidget *parent) :
     connect(timer,SIGNAL(timeout()), this, SLOT(autohide()));
 }
 void Dictlogo::popup(){
-    hide();
     timer->stop();
     setWindowOpacity(qreal(0.9));
     move(QCursor::pos()-QPoint(36,46));

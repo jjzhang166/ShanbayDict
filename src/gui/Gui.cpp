@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <app/application.h>
+#include <QDesktopServices>
 
 
 Gui::Gui(QObject *parent) : QObject(parent)
@@ -12,7 +13,7 @@ void Gui::init(){
 
     engine = new QQmlApplicationEngine();
     QQmlContext *context = engine->rootContext();
-    context->setContextProperty("configs", DICT::config.get());
+    context->setContextProperty("cfg", DICT::cfg.get());
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/Login.qml")));
     loginWin = qobject_cast<QWindow*>(engine->rootObjects().at(0));
@@ -20,6 +21,8 @@ void Gui::init(){
 
     //loginWin->setFlags(Qt::FramelessWindowHint);
     //qDebug()<<engine.rootObjects().size()<<loginWin->objectName();
+    QObject::connect(loginWin,SIGNAL(signalRegisterClick()),
+                     this,SLOT(registerClick()));
 
     QObject::connect(loginWin, SIGNAL(signalLoginClick(QString,QString,QString)),
                      this, SIGNAL(signalLoginClick(QString,QString,QString)));
@@ -58,7 +61,8 @@ void Gui::setLoginWinState(const QString &str){
 }
 //mainWin
 void Gui::showMainWin(){
-    mainWin->show();
+    //mainWin->hide();
+    mainWin->showNormal();
 }
 
 void Gui::showWord(const QString &wordinfo){
@@ -72,5 +76,7 @@ void Gui::showWordInBalloon(const QString &wordinfo){
     balloonWin->setPosition(QCursor::pos()+QPoint(10,15));
     balloonWin->show();
     emit signalShowWordInBalloon(wordinfo);
-
+}
+void Gui::registerClick(){
+    QDesktopServices::openUrl(QUrl("http://www.shanbay.com/referral/ref/9e54b69ab8/"));
 }

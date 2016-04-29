@@ -3,8 +3,8 @@ import QtQuick.Controls 1.5
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
-Item {
-
+Rectangle {
+    radius: 10
     property alias btn_sound0: btn_sound0
     property alias btn_sound1: btn_sound1
     property alias word_name: word_name
@@ -23,6 +23,7 @@ Item {
             text: qsTr("Text")
             style: Text.Normal
             font.bold: true
+            color:'#209e85'
             verticalAlignment: Text.AlignBottom
             font.pixelSize: 18
         }
@@ -69,7 +70,7 @@ Item {
         ToolButton {
             id: btn_addword
             tooltip: qsTr("添加进生词库，加入背单词计划")
-            iconSource: "qrc:/img/addword1.ico"
+            iconSource: "qrc:/img/add1.png"
         }
 
     }
@@ -88,6 +89,4 @@ Item {
         wrapMode: Text.WrapAnywhere
         font.pixelSize: 15
     }
-
-
 }

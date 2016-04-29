@@ -22,5 +22,8 @@
         <file>img/audio.ico</file>
         <file>img/word.ico</file>
         <file>img/setup.ico</file>
+        <file>img/speaker.png</file>
+        <file>img/add0.png</file>
+        <file>img/add1.png</file>
     </qresource>
 </RCC>

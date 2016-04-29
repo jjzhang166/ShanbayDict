@@ -41,7 +41,7 @@ namespace DICT{
     extern std::unique_ptr<Application> app;
     extern std::unique_ptr<Gui> gui;
     extern std::unique_ptr<ShanbayNet> shanbayNet;
-    extern std::unique_ptr<Config> config;
+    extern std::unique_ptr<Config> cfg;
     extern Dictlogo* logo;
 }
 #endif // APPLICATION_H

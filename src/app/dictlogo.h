@@ -53,6 +53,7 @@ private:
 protected:
 #ifdef Q_OS_WIN
     void mousePressEvent( QMouseEvent*){
+        timer->stop();
         hide();
         emit Clicked();
 

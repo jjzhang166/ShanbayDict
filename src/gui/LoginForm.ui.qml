@@ -5,7 +5,9 @@ import QtQuick.Controls.Styles 1.3
 
 Item {
     id: item1
+    height: columnLayout1.y + columnLayout1.height + 30
     property alias btn_login: btn_login
+    property alias btn_register: btn_register
     property alias username: username
     property alias password: password
     property alias labelState: labelState
@@ -64,6 +66,7 @@ Item {
         width: 476
         Row {
             id: row1
+            spacing: 7
             Layout.fillWidth: true
             visible: true
             Label {
@@ -96,23 +99,53 @@ Item {
         }
         Row{
             id: row2
+            spacing: 60
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             Button {
                 id: btn_login
                 width: 90
                 height: 30
                 text: qsTr("登录")
+                enabled: false
                 anchors.verticalCenter: parent.verticalCenter
                 style: ButtonStyle {
-                      label: Text {
-                          renderType: Text.NativeRendering
-                          verticalAlignment: Text.AlignVCenter
-                          horizontalAlignment: Text.AlignHCenter
-                          font.family: "Helvetica"
-                          font.bold: true
-                          font.pointSize: 12
-                          text: control.text
-                      }
+                    label: Text {
+
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.bold: true
+                        font.pointSize: 12
+                        text: control.text
+                        color: control.enabled ? "black":"gray"
+                    }
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 25
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#888"
+                        radius: 5
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
+                            GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                        }
+                    }
+                }
+            }
+            Button {
+                id: btn_register
+                text: qsTr("注册")
+                style: ButtonStyle {
+                    label: Text {
+                        renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.family: "Helvetica"
+                        font.bold: true
+                        font.pointSize: 12
+                        text: control.text
+                    }
                 }
             }
         }
@@ -137,6 +170,8 @@ Item {
             }
         }
     }
+
+
 
 
 }

@@ -34,22 +34,21 @@ Window {
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = true;
             playSound0.source = voc.uk_audio;
             playSound1.source = voc.us_audio;
-            if(configs.isAutospeak()) playSound1.play();
+            if(cfg.isAutospeak()) playSound1.play();
         }else{
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
         }
         mainForm.text_def.text =voc.definition;
-        window.height = Math.min(ainForm.text_def.height + 100,360);
-        window.width = Math.min(ainForm.rowLayout_pronu.width + 20,180);
 
-
+        window.width = Math.max(mainForm.rowLayout_pronu.width + 20,360);
+        window.height = Math.max(mainForm.text_def.height + 100,180);
     }
     function updateBtnaddword(learning_id){
         if(learning_id&&learning_id!==0){
-            mainForm.btn_addword.iconSource = "qrc:/img/addword0.ico";
+            mainForm.btn_addword.iconSource = "qrc:/img/add0.png";
             mainForm.btn_addword.tooltip = qsTr("忘记了，重新加入背单词计划");
         }else{
-            mainForm.btn_addword.iconSource = "qrc:/img/addword1.ico";
+            mainForm.btn_addword.iconSource = "qrc:/img/add1.png";
             mainForm.btn_addword.tooltip = qsTr("添加进生词库，加入背单词计划");
         }
     }

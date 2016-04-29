@@ -3,13 +3,14 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QClipboard>
+#include <QMimeData>
 #include <QThread>
 #include "app/application.h"
 
 std::unique_ptr<Application> DICT::app = std::make_unique<Application>();
 std::unique_ptr<Gui> DICT::gui = std::make_unique<Gui>();
 std::unique_ptr<ShanbayNet> DICT::shanbayNet = std::make_unique<ShanbayNet>();
-std::unique_ptr<Config> DICT::config = std::make_unique<Config>();
+std::unique_ptr<Config> DICT::cfg = std::make_unique<Config>();
 Dictlogo* DICT::logo;
 Application::Application(){
 }
@@ -19,7 +20,7 @@ void Application::init(){
     DICT::logo = new Dictlogo();
     QObject::connect(DICT::logo,&Dictlogo::Clicked,
                      [&](){
-        qDebug()<<"logo clicked:"<<capture_text;
+        //qDebug()<<"logo clicked:"<<capture_text;
         DICT::shanbayNet->queryWord(capture_text);
     });
 
@@ -32,23 +33,23 @@ void Application::init(){
             DICT::gui->setLoginWinState("无法连接扇贝网，请稍后重试");
             return;
         }
-        DICT::gui->setLoginWinState("扇贝网已经连接，请登录");
+        DICT::gui->setLoginWinState("已连接扇贝网，请登录!");
     });
     QObject::connect(DICT::shanbayNet.get(),&ShanbayNet::signalShowCaptcha,
                      [&](){
-        qDebug()<<DICT::shanbayNet->captcha.id<<DICT::shanbayNet->captcha.url;
+        //qDebug()<<DICT::shanbayNet->captcha.id<<DICT::shanbayNet->captcha.url;
         DICT::gui->showCaptchaImg(DICT::shanbayNet->captcha.url);
 
     });
     QObject::connect(DICT::gui.get(), &Gui::signalLoginClick,
                      [&](const QString username,QString password,QString captchacode){
-        qDebug()<<"loginClick:"<<username <<password<<captchacode;
+        //qDebug()<<"loginClick:"<<username <<password<<captchacode;
         DICT::shanbayNet->login(username,password,captchacode);
 
     });
     QObject::connect(DICT::gui.get(),&Gui::signalFreshCaptchaImg,
                      [&](){
-        qDebug()<<"require fresh captcha img";
+        //qDebug()<<"require fresh captcha img";
         DICT::shanbayNet->refreshCaptchaImg();
     });
     QObject::connect(DICT::shanbayNet.get(),&ShanbayNet::signalLoginFinished,
@@ -56,9 +57,10 @@ void Application::init(){
         if(ok){
             DICT::gui->loginWin->hide();
             DICT::gui->mainWin->show();
-            DICT::config->setUsername(DICT::shanbayNet->username);
-            if(DICT::config->isSavepass()) DICT::config->setUserpass(DICT::shanbayNet->password);
+            DICT::cfg->setUsername(DICT::shanbayNet->username);
+            if(DICT::cfg->isSavepass()) DICT::cfg->setUserpass(DICT::shanbayNet->password);
             setScreenText();
+            showSystrayIcon();
         }else{
             DICT::gui->setLoginWinState(msg);
         }
@@ -102,14 +104,14 @@ void Application::showSystrayIcon(){
     helpAction =new QAction(QIcon(":/img/help.png"),QObject::tr("帮助"),qApp);
     quitAction = new QAction(QIcon(":/img/quit.png"),QObject::tr("退出程序"), qApp);
     cfgAction=new QAction(QIcon(":/img/setup.ico"),QObject::tr("软件设置"),qApp);
-    autospeakAction=new QAction(QIcon(":/img/sound1.ico"),QObject::tr("自动发音"),qApp);
+    autospeakAction=new QAction(QIcon(":/img/speaker.png"),QObject::tr("自动发音"),qApp);
     getscreenwordAction=new QAction(QIcon(":/img/word.ico"),QObject::tr("屏幕取词"),qApp);
     aboutAction=new QAction(QIcon(":/img/about.png"),QObject::tr("关于"),qApp);
 
     autospeakAction->setCheckable(true);
-    autospeakAction->setChecked(DICT::config->isAutospeak());
+    autospeakAction->setChecked(DICT::cfg->isAutospeak());
     getscreenwordAction->setCheckable(true);
-    getscreenwordAction->setChecked(DICT::config->isGetscreentext());
+    getscreenwordAction->setChecked(DICT::cfg->isGetscreentext());
 
     dictMenu->addAction(showMainWinAction);
     dictMenu->addAction(helpAction);
@@ -124,12 +126,12 @@ void Application::showSystrayIcon(){
     QObject::connect(showMainWinAction,&QAction::triggered,[&](){DICT::gui->showMainWin();});
     QObject::connect(autospeakAction,&QAction::toggled,
                      [&](bool checked){
-        DICT::config->setAutospeak(checked);
-        qDebug()<<"autospeak:"<<DICT::config->isAutospeak();
+        DICT::cfg->setAutospeak(checked);
+        qDebug()<<"autospeak:"<<DICT::cfg->isAutospeak();
     });
     QObject::connect(getscreenwordAction,&QAction::toggled,
                      [&](bool checked){
-        DICT::config->setScreentext(checked);
+        DICT::cfg->setScreentext(checked);
         qDebug()<<"getscreenwordAction:"<<checked;
         setScreenText();
     });
@@ -163,12 +165,13 @@ void Application::run(){
     init();
     DICT::gui->setLoginWinState("正在连接扇贝网...");
     DICT::gui->loginWin->show();
-    showSystrayIcon();
+
 }
 void Application::captureText(QString text){
-    capture_text = text;
+    capture_text = text.trimmed();
+    if(capture_text.isEmpty()||capture_text.length()>20) return;
     showType = ShowType::balloon;
-    if(DICT::config->isShowquerylogo()){
+    if(DICT::cfg->isShowquerylogo()){
         DICT::logo->popup();
         return;
     }
@@ -176,37 +179,26 @@ void Application::captureText(QString text){
 }
 
 void Application::setScreenText(){
-    if(!DICT::config->isGetscreentext()){//关闭屏幕取词
-#ifdef Q_OS_WIN
-        //windows下关闭取词
-#endif
+    if(!DICT::cfg->isGetscreentext()){//关闭屏幕取词
         QObject::disconnect(qApp->clipboard(),0,0,0);
         return;
     }
+    if(qApp->clipboard()->supportsSelection()){//windows and os_x not supportSection
+        if(DICT::cfg->isGetselectedtext()){
+            QObject::connect(qApp->clipboard(),&QClipboard::selectionChanged,
+                             [&](){
+                //qDebug()<<"selectionChanged"<< qApp->clipboard()->mimeData(QClipboard::Selection)->hasText()<<qApp->clipboard()->text(QClipboard::Selection);
+                captureText(qApp->clipboard()->text(QClipboard::Selection));
+            });
 
-    if(DICT::config->isGetselectedtext()){
-#ifdef Q_OS_WIN
-        //windows 不支持选中取词
-#else
-        QObject::connect(qApp->clipboard(),&QClipboard::selectionChanged,
-                         [&](){
-
-            qDebug()<<"selectionChanged"<<qApp->clipboard()->text(QClipboard::Selection);
-            captureText(qApp->clipboard()->text(QClipboard::Selection));
-        });
-#endif
-    }else{
-#ifdef Q_OS_WIN
-        //windows下关闭取词
-#else
-        QObject::disconnect(qApp->clipboard(),&QClipboard::selectionChanged,0,0);
-#endif
+        }else{
+            QObject::disconnect(qApp->clipboard(),&QClipboard::selectionChanged,0,0);
+        }
     }
-
-    if(DICT::config->isGetclipboardtext())   {
+    if(DICT::cfg->isGetclipboardtext())   {
         QObject::connect(qApp->clipboard(),&QClipboard::dataChanged,
                          [&](){
-            qDebug()<<"dataChanged"<<qApp->clipboard()->text();
+            //qDebug()<<"dataChanged"<<qApp->clipboard()->mimeData(QClipboard::Clipboard)->hasText()<<qApp->clipboard()->text();
             captureText(qApp->clipboard()->text());
         });
     }else{

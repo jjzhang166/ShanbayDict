@@ -24,11 +24,19 @@ Rectangle {
         x: 8
         y: 17
         width: 360
-        height: 30
-        text: "good"
+        height: 32
+        text: ""
         opacity: 0.9
         font.pointSize: 18
-        placeholderText: qsTr("Word Field")
+        placeholderText: qsTr("Input English Word")
+        style: TextFieldStyle {
+            textColor: "black"
+            background: Rectangle {
+                radius: 5
+                border.color: "#0099CC"
+                border.width: 1
+            }
+        }
     }
     Button {
         id: btn_query
@@ -46,11 +54,13 @@ Rectangle {
         y: 57
         width: 180
         height: 21
+
         Text {
             id: word_name
             text: qsTr("Text")
             style: Text.Normal
             font.bold: true
+            color:'#209e85'
             verticalAlignment: Text.AlignBottom
             font.pixelSize: 18
         }
@@ -94,6 +104,11 @@ Rectangle {
             height: 16
             iconSource: "qrc:/img/sound1.ico"
         }
+        ToolButton {
+            id: btn_addword
+            tooltip: qsTr("添加进生词库，加入背单词计划")
+            iconSource: "qrc:/img/add1.png"
+        }
 
     }
     Text {
@@ -103,18 +118,11 @@ Rectangle {
         width: 780
         //height: 77
         text: qsTr("word definition")
+        clip: false
         textFormat: Text.RichText
         wrapMode: Text.WrapAnywhere
         font.pixelSize: 15
     }
 
-    ToolButton {
-        id: btn_addword
-        x: 579
-        y: 57
-        anchors.right: parent.right
-        anchors.rightMargin: 31
-        tooltip: qsTr("添加进生词库，加入背单词计划")
-        iconSource: "qrc:/img/addword1.ico"
-    }
+
 }

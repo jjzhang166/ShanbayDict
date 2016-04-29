@@ -270,7 +270,7 @@ void ShanbayNet::httpfinished(QNetworkReply* reply){
             emit signalLoginFinished(true,"登录成功");
         }else{
             qDebug()<<"Login failed!";
-            qDebug()<<html<<"验证码错误 pos:"<<html.indexOf("验证码错误");
+            //qDebug()<<html<<"验证码错误 pos:"<<html.indexOf("验证码错误");
             captcha.parseHtml(html);
             if(captcha.isneed()){
                 emit signalShowCaptcha();

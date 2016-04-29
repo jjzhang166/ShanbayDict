@@ -4,20 +4,22 @@ import QtQuick.Window 2.2
 Window {
     id: window
     visible: false
-    title:"Login Dialog"
-    width:500
-    height:300
+    title:"ShanbayDict 2.0 Login Dialog"
+    width:520
+    height:loginForm.height
     objectName: "Login Window"
     signal signalLoginClick(string name,string pass,string captchacode)
     signal signalFreshCaptchaImg()
+    signal signalRegisterClick()
     function setState(msg) {
-        console.log("QML received: " + msg);
+        //console.log("QML received: " + msg);
+        if(msg.indexOf("请登录")>0) loginForm.btn_login.enabled = true;
         loginForm.captcha_code.text = "";
         loginForm.labelState.visible = true;
         loginForm.labelState.text = msg;
     }
     function showCaptchaImg(url){
-        console.log("captcha_imd url:"+url);
+        //console.log("captcha_imd url:"+url);
         if(url.length>0){
             loginForm.row1.visible=true;
             loginForm.captcha_img.source=url;
@@ -33,6 +35,10 @@ Window {
             loginForm.labelState.visible=false;
             signalLoginClick(username.text,password.text,captcha_code.text);
         }
+        btn_register.onClicked: {
+            signalRegisterClick();
+        }
+
         captcha_img_mousearea.onClicked: {
             signalFreshCaptchaImg();
         }
@@ -57,9 +63,9 @@ Window {
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2);
         setY(Screen.height / 2 - height / 2);
-        loginForm.username.text = configs.getUsername();
-        loginForm.password.text = configs.getUserpass();
-        loginForm.checkBox_savepass.checked=configs.isSavepass();
+        loginForm.username.text = cfg.getUsername();
+        loginForm.password.text = cfg.getUserpass();
+        loginForm.checkBox_savepass.checked=cfg.isSavepass();
     }
 
 }

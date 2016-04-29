@@ -27,6 +27,7 @@ signals:
     void signalShowWordInBalloon(const QVariant& wordinfo) const;
 
 public slots:
+    void registerClick();
 public:
     void init();
     void showCaptchaImg(const QString& url);
@@ -42,6 +43,7 @@ public:
     QWindow* balloonWin;
 private:
     QQmlApplicationEngine *engine;
+
 };
 
 #endif // GUI_H

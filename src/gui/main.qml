@@ -6,6 +6,7 @@ Window {
     visible: false
     width: 800
     height: 600
+    flags: Qt.WindowStaysOnTopHint //|Qt.Dialog
     property var voc
     signal signalBtnqueryClick(string word)
     signal signalBtnaddwordClick(string type,string id)
@@ -21,10 +22,10 @@ Window {
     }
     function updateBtnaddword(learning_id){
         if(learning_id&&learning_id!==0){
-            mainForm.btn_addword.iconSource = "qrc:/img/addword0.ico";
+            mainForm.btn_addword.iconSource = "qrc:/img/add0.png";
             mainForm.btn_addword.tooltip = qsTr("忘记了，重新加入背单词计划");
         }else{
-            mainForm.btn_addword.iconSource = "qrc:/img/addword1.ico";
+            mainForm.btn_addword.iconSource = "qrc:/img/add1.png";
             mainForm.btn_addword.tooltip = qsTr("添加进生词库，加入背单词计划");
         }
     }
@@ -33,12 +34,13 @@ Window {
         //console.log("wordstr:"+wordstr);
         var json = JSON.parse(wordstr);
         if(json.status_code !== 0 ){
-            mainForm.word_name.text = mainForm.textWord.text+" not found." + json.msg;
+            mainForm.word_name.text = json.msg;
             mainForm.btn_addword.visible = false;
             mainForm.pronu_uk.visible = false;
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
             return;
-        }        
+        }
+        mainForm.textWord.text = "";
         mainForm.btn_addword.visible = true;
         mainForm.pronu_us.visible = true;
         mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = true;
@@ -51,7 +53,7 @@ Window {
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = true;
             playSound0.source = voc.uk_audio;
             playSound1.source = voc.us_audio;
-            if(configs.isAutospeak()) playSound1.play();
+            if(cfg.isAutospeak()) playSound1.play();
         }else{
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
         }
@@ -107,7 +109,7 @@ Window {
                 playSound1.play();
             }
             Keys.onPressed: {
-                console.log(event.key + "enterrrrrrrrrrrrrrrrrrrrrrrrrrrr"+Qt.Key_Enter +" "+Qt.Key_Return)
+                //console.log(event.key + "enterrrrrrrrrrrrrrrrrrrrrrrrrrrr"+Qt.Key_Enter +" "+Qt.Key_Return)
                 if(event.key === Qt.Key_Enter || event.key === Qt.Key_Return){
                     if(textWord.focus) {
                         signalBtnqueryClick(textWord.text);
@@ -161,10 +163,10 @@ Window {
         mainForm.btn_addword.visible = false;
         mainForm.pronu_us.visible = false;
         mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
-        console.log("main window"+configs.value("getscreentext"));
+        //console.log("main window"+configs.value("getscreentext"));
     }
     onClosing:{
-        console.log("main windows is closing");
+        //console.log("main windows is closing");
         visible = false;
         close.accepted = false;
     }
