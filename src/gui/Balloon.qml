@@ -11,7 +11,7 @@ Window {
     property var voc
     function showWord(wordstr){
         window.requestActivate();
-        console.log("wordstr:"+wordstr);
+        //console.log("wordstr:"+wordstr);
         var json = JSON.parse(wordstr);
         if(json.status_code !== 0 ){
             mainForm.word_name.text = json.msg;
@@ -44,8 +44,8 @@ Window {
         window.height = Math.max(mainForm.text_def.height + 100,180);
     }
     function updateBtnaddword(learning_id){
-        winState.text = "add word state info";
-        winState.visible = true;
+        winInfo.text = "add word state info";
+        winInfo.visible = true;
         if(learning_id&&learning_id!==0){
             mainForm.btn_addword.iconSource = "qrc:/img/add0.png";
             mainForm.btn_addword.tooltip = qsTr("忘记了，重新加入背单词计划");
@@ -77,14 +77,8 @@ Window {
         console.log("window onActiveChanged"+ active);
         visible = active;
     }
-    Text {
-        id: winState
-        color: "#0a3ea2"
-        text: qsTr("Label state")
-        anchors.bottom: parent.bottom
-        style: Text.Normal
-        font.bold: true
-        font.pointSize: 12
+    WinInfo{
+        id: winInfo
     }
 }
 

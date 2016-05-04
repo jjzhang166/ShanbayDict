@@ -14,8 +14,8 @@ Window {
         //console.log("QML received: " + msg);
         if(msg.indexOf("请登录")>0) loginForm.btn_login.enabled = true;
         loginForm.captcha_code.text = "";
-        winState.visible = true;
-        winState.text = msg;
+        winInfo.visible = true;
+        winInfo.text = msg;
     }
     function showCaptchaImg(url){
         //console.log("captcha_imd url:"+url);
@@ -31,7 +31,7 @@ Window {
         id: loginForm
         row1.visible: false;
         btn_login.onClicked: {
-            winState.visible=false;
+            winInfo.visible=false;
             signalLoginClick(username.text,password.text,captcha_code.text);
         }
         btn_register.onClicked: {
@@ -59,15 +59,9 @@ Window {
             signalLoginClick(username.text,password.text,captcha_code.text);
         }
     }
-    Text {
-        id: winState
-        color: "#0a3ea2"
-        text: qsTr("Label state")
-        anchors.bottom: parent.bottom
-        style: Text.Normal
-        font.bold: true
-        font.pointSize: 12
-    }
+   WinInfo{
+       id: winInfo
+   }
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2);
         setY(Screen.height / 2 - height / 2);

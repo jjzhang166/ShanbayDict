@@ -38,9 +38,12 @@ public:
     void addWordRet(const QString& data);
 
     void showWordInBalloon(const QString& wordinfo);
+
+    void showSetupWin();
     QWindow* loginWin;
     QWindow* mainWin;
     QWindow* balloonWin;
+    QWindow* setupWin;
 private:
     QQmlApplicationEngine *engine;
 

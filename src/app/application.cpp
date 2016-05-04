@@ -56,7 +56,7 @@ void Application::init(){
                      [&](bool ok,const QString& msg){
         if(ok){
             DICT::gui->loginWin->hide();
-            DICT::gui->mainWin->show();
+            if(!DICT::cfg->isAutohide()) DICT::gui->mainWin->show();
             DICT::cfg->setUsername(DICT::shanbayNet->username);
             if(DICT::cfg->isSavepass()) DICT::cfg->setUserpass(DICT::shanbayNet->password);
             setScreenText();
@@ -135,7 +135,24 @@ void Application::showSystrayIcon(){
         qDebug()<<"getscreenwordAction:"<<checked;
         setScreenText();
     });
+    QObject::connect(DICT::cfg.get(),&Config::signalChange,
+                     [&](const QString& key, const QVariant& value){
+        if(key=="screentext"){
+            getscreenwordAction->setChecked(value.toBool());
+        }else if(key=="autospeak"){
+            autospeakAction->setChecked(value.toBool());
+            setScreenText();
+        }else if(key=="selectedtext"){
+            setScreenText();
+        }else if(key=="clipboardtext"){
+            setScreenText();
+        }
+    });
     QObject::connect(quitAction,&QAction::triggered,[&](){qApp->quit();});
+    QObject::connect(cfgAction,&QAction::triggered,
+                     [&](){
+       DICT::gui->showSetupWin();
+    });
 
     //Qt bug:Ubuntu 14.04 Qt 5.6 QSystemTrayIcon doesn't emit activated signal
     QObject::connect(trayIcon,&QSystemTrayIcon::activated,
@@ -187,7 +204,7 @@ void Application::setScreenText(){
         if(DICT::cfg->isGetselectedtext()){
             QObject::connect(qApp->clipboard(),&QClipboard::selectionChanged,
                              [&](){
-                //qDebug()<<"selectionChanged"<< qApp->clipboard()->mimeData(QClipboard::Selection)->hasText()<<qApp->clipboard()->text(QClipboard::Selection);
+                qDebug()<<"selectionChanged"<< qApp->clipboard()->mimeData(QClipboard::Selection)->hasText()<<qApp->clipboard()->text(QClipboard::Selection);
                 captureText(qApp->clipboard()->text(QClipboard::Selection));
             });
 
@@ -198,7 +215,7 @@ void Application::setScreenText(){
     if(DICT::cfg->isGetclipboardtext())   {
         QObject::connect(qApp->clipboard(),&QClipboard::dataChanged,
                          [&](){
-            //qDebug()<<"dataChanged"<<qApp->clipboard()->mimeData(QClipboard::Clipboard)->hasText()<<qApp->clipboard()->text();
+            qDebug()<<"dataChanged"<<qApp->clipboard()->mimeData(QClipboard::Clipboard)->hasText()<<qApp->clipboard()->text();
             captureText(qApp->clipboard()->text());
         });
     }else{

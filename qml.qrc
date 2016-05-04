@@ -7,5 +7,8 @@
         <file>src/gui/ScrollBar.qml</file>
         <file>src/gui/Balloon.qml</file>
         <file>src/gui/BalloonForm.ui.qml</file>
+        <file>src/gui/WinInfo.qml</file>
+        <file>src/gui/Setup.qml</file>
+        <file>src/gui/SetupForm.ui.qml</file>
     </qresource>
 </RCC>

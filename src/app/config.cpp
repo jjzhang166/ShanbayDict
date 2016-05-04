@@ -44,6 +44,7 @@ Config::~Config(){
     settings_->deleteLater();
 }
 void Config::setValue(const QString &key, const QVariant &value) {
+    emit signalChange(key,value);
     settings_->setValue(key, value);
 }
 
@@ -87,7 +88,7 @@ void Config::save(){
 QString Config::getUsername(){
     return username;
 }
-void Config::setUsername(QString name){
+void Config::setUsername(QString name){    
     username=name;
 }
 
@@ -103,6 +104,7 @@ bool Config::isSavepass(){
 }
 void Config::setSavepass(bool value){
     savepass=value;
+    emit signalChange("savepass",value);
     if(!savepass) userpass="";
 }
 
@@ -111,6 +113,7 @@ bool Config::isAutologin(){
 }
 void Config::setAutologin(bool value){
     autologin=value;
+    emit signalChange("autologin",value);
 }
 
 bool Config::isAutohide(){
@@ -118,6 +121,7 @@ bool Config::isAutohide(){
 }
 void Config::setAutohide(bool value){
     autohide=value;
+    emit signalChange("autohide",value);
 }
 
 bool Config::isAutospeak(){
@@ -125,6 +129,7 @@ bool Config::isAutospeak(){
 }
 void Config::setAutospeak(bool value){
     autospeak=value;
+    emit signalChange("autospeak",value);
 }
 
 bool Config::isAutorun(){
@@ -132,6 +137,7 @@ bool Config::isAutorun(){
 }
 void Config::setAutorun(bool value){
     autorun=value;
+    emit signalChange("autorun",value);
 }
 
 bool Config::isGetclipboardtext(){
@@ -139,12 +145,14 @@ bool Config::isGetclipboardtext(){
 }
 void Config::setClipboardtext(bool value){
     getclipboardtext=value;
+    emit signalChange("clipboardtext",value);
 }
 bool Config::isGetselectedtext(){
     return getselectedtext;
 }
 void Config::setSelectedtext(bool value){
     getselectedtext=value;
+    emit signalChange("selectedtext",value);
 }
 
 bool Config::isGetscreentext(){
@@ -152,6 +160,7 @@ bool Config::isGetscreentext(){
 }
 void Config::setScreentext(bool value){
     getscreentext=value;
+    emit signalChange("screentext",value);
 }
 
 bool Config::isShowquerylogo(){
@@ -159,10 +168,12 @@ bool Config::isShowquerylogo(){
 }
 void Config::setShowquerylogo(bool value){
     showquerylogo=value;
+    emit signalChange("showquerylogo",value);
 }
 bool Config::isAutoaddword(){
     return autoaddword;
 }
 void Config::setAutoaddword(bool value){
     autoaddword=value;
+    emit signalChange("autoaddword",value);
 }

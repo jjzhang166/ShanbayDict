@@ -51,6 +51,9 @@ void Gui::init(){
     QObject::connect(this,SIGNAL(signalShowWordInBalloon(QVariant)),
                      balloonWin,SLOT(showWord(QVariant)));
 
+    engine->load(QUrl(QStringLiteral("qrc:/src/gui/Setup.qml")));
+    setupWin = qobject_cast<QWindow*>(engine->rootObjects().at(3));
+
 }
 //loginWin
 void Gui::showCaptchaImg(const QString &url){
@@ -79,4 +82,8 @@ void Gui::showWordInBalloon(const QString &wordinfo){
 }
 void Gui::registerClick(){
     QDesktopServices::openUrl(QUrl("http://www.shanbay.com/referral/ref/9e54b69ab8/"));
+}
+
+void Gui::showSetupWin(){
+    setupWin->show();
 }

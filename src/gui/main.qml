@@ -16,9 +16,12 @@ Window {
         var json=JSON.parse(retstr);
         if(json.status_code !== 0 ){
             mainForm.word_name.text = "添加新词失败：" + json.msg;
+            winInfo.text = "添加新词失败：" + json.msg;
+            winInfo.showinfo("添加新词失败：" + json.msg);
             return;
         }
         updateBtnaddword(json.data.id);
+        winInfo.showinfo(voc.content+"  已经加入你的扇贝网生词本，列入背单词计划。");
     }
     function updateBtnaddword(learning_id){
         if(learning_id&&learning_id!==0){
@@ -91,6 +94,7 @@ Window {
             width:  text_def.width + 20
             height: text_def.height + 100
             btn_query.onClicked: {
+                winInfo.hide();
                 signalBtnqueryClick(textWord.text);
             }
             btn_addword.onClicked: {
@@ -155,18 +159,13 @@ Window {
         position: view.visibleArea.xPosition
         pageSize: view.visibleArea.widthRatio
     }
-    Text {
-        id: winState
-        color: "#0a3ea2"
-        text: qsTr("Label state")
-        anchors.bottom: parent.bottom
-        style: Text.Normal
-        font.bold: true
-        font.pointSize: 12
+    WinInfo{
+        id: winInfo
     }
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2);
         setY(Screen.height / 2 - height / 2);
+        winInfo.hide();
         mainForm.word_name.text = "";
         mainForm.text_def.text = "";
         mainForm.btn_addword.visible = false;
