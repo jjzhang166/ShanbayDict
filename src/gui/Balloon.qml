@@ -8,7 +8,21 @@ Window {
     height: 180
     flags: Qt.SplashScreen
     objectName: "balloon"
-    property var voc
+    property var voc    
+    signal signalBtnaddwordClick(string type,string id)
+    //slot
+    function addWordRet(retstr){
+        console.log(" add word ret"+retstr);
+        var json=JSON.parse(retstr);
+        if(json.status_code !== 0 ){
+            mainForm.word_name.text = "添加新词失败：" + json.msg;
+            winInfo.text = "添加新词失败：" + json.msg;
+            winInfo.showinfo("添加新词失败：" + json.msg);
+            return;
+        }
+        updateBtnaddword(json.data.id);
+        winInfo.showinfo(voc.content+"  已加入扇贝网生词本,列入背单词计划。");
+    }
     function showWord(wordstr){
         window.requestActivate();
         //console.log("wordstr:"+wordstr);
@@ -21,6 +35,7 @@ Window {
             mainForm.text_def.visible = false;
             return;
         }
+        winInfo.hide();
         mainForm.text_def.visible = true;
         mainForm.btn_addword.visible = true;
         mainForm.pronu_us.visible = true;
@@ -44,8 +59,6 @@ Window {
         window.height = Math.max(mainForm.text_def.height + 100,180);
     }
     function updateBtnaddword(learning_id){
-        winInfo.text = "add word state info";
-        winInfo.visible = true;
         if(learning_id&&learning_id!==0){
             mainForm.btn_addword.iconSource = "qrc:/img/add0.png";
             mainForm.btn_addword.tooltip = qsTr("忘记了，重新加入背单词计划");
@@ -64,6 +77,13 @@ Window {
     BalloonForm {
         id: mainForm
         anchors.fill: parent
+        btn_addword.onClicked: {
+            if(voc.learning_id&&voc.learning_id!==0){
+                signalBtnaddwordClick("relearn",voc.learning_id);
+            }else{
+                signalBtnaddwordClick("add",voc.object_id);
+            }
+        }
         btn_sound0.onClicked: {
             //console.log(mainForm.height+"  "+view.contentHeight)
             playSound0.play();
@@ -79,6 +99,7 @@ Window {
     }
     WinInfo{
         id: winInfo
+        visible: false
     }
 }
 

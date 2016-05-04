@@ -86,7 +86,7 @@ void Application::init(){
     });
     QObject::connect(DICT::shanbayNet.get(),&ShanbayNet::signalAddwordFinished,
                      [&](const QString&data){
-        DICT::gui->addWordRet(data);
+        DICT::gui->addWordRet(showType,data);
     });
 
     QObject::connect(qApp,&QApplication::aboutToQuit,[&](){close();});

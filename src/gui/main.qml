@@ -161,11 +161,11 @@ Window {
     }
     WinInfo{
         id: winInfo
+        visible: false
     }
     Component.onCompleted: {
         setX(Screen.width / 2 - width / 2);
         setY(Screen.height / 2 - height / 2);
-        winInfo.hide();
         mainForm.word_name.text = "";
         mainForm.text_def.text = "";
         mainForm.btn_addword.visible = false;

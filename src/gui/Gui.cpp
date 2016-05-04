@@ -1,7 +1,6 @@
 #include "Gui.h"
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <app/application.h>
 #include <QDesktopServices>
 
 
@@ -43,13 +42,19 @@ void Gui::init(){
 
     QObject::connect(mainWin,SIGNAL(signalBtnaddwordClick(QString,QString)),
                      this,SIGNAL(signalBtnaddwordClick(QString,QString)));
-    QObject::connect(this,SIGNAL(signalAddwordRet(QVariant)),
+    QObject::connect(this,SIGNAL(signalAddwordRetMain(QVariant)),
                      mainWin,SLOT(addWordRet(QVariant)));
+
+
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/Balloon.qml")));
     balloonWin = qobject_cast<QWindow*>(engine->rootObjects().at(2));
     QObject::connect(this,SIGNAL(signalShowWordInBalloon(QVariant)),
                      balloonWin,SLOT(showWord(QVariant)));
+    QObject::connect(balloonWin,SIGNAL(signalBtnaddwordClick(QString,QString)),
+                     this,SIGNAL(signalBtnaddwordClick(QString,QString)));
+    QObject::connect(this,SIGNAL(signalAddwordRetBalloon(QVariant)),
+                     balloonWin,SLOT(addWordRet(QVariant)));
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/Setup.qml")));
     setupWin = qobject_cast<QWindow*>(engine->rootObjects().at(3));
@@ -71,8 +76,14 @@ void Gui::showMainWin(){
 void Gui::showWord(const QString &wordinfo){
     emit signalShowWord(wordinfo);
 }
-void Gui::addWordRet(const QString &data){
-    emit signalAddwordRet(data);
+void Gui::addWordRet(const ShowType type,const QString &data){
+    if(type==ShowType::main){
+        emit signalAddwordRetMain(data);
+    }else if(type==ShowType::balloon){
+        qDebug()<<"balloon add word ret";
+        emit signalAddwordRetBalloon(data);
+    }
+
 }
 
 void Gui::showWordInBalloon(const QString &wordinfo){

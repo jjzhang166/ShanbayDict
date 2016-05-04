@@ -1,6 +1,6 @@
 #ifndef GUI_H
 #define GUI_H
-
+#include <app/application.h>
 #include <QObject>
 #include <QWindow>
 class QQmlApplicationEngine;
@@ -22,7 +22,9 @@ signals:
     void signalSetLoginWinState(const QVariant& str) const;
 
     void signalShowWord(const QVariant& wordinfo) const;
-    void signalAddwordRet(const QVariant& data) const;
+    void signalAddwordRetMain(const QVariant& data) const;
+
+    void signalAddwordRetBalloon(const QVariant& data) const;
 
     void signalShowWordInBalloon(const QVariant& wordinfo) const;
 
@@ -35,7 +37,7 @@ public:
     void showMainWin();
 
     void showWord(const QString& wordinfo);
-    void addWordRet(const QString& data);
+    void addWordRet(const ShowType type,const QString& data);
 
     void showWordInBalloon(const QString& wordinfo);
 
@@ -48,5 +50,7 @@ private:
     QQmlApplicationEngine *engine;
 
 };
-
+namespace DICT{
+    extern std::unique_ptr<Gui> gui;
+}
 #endif // GUI_H

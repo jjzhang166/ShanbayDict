@@ -1,5 +1,6 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
+enum class ShowType{balloon,main};
 #include <QDebug>
 #include <memory>
 #include <QSystemTrayIcon>
@@ -9,7 +10,7 @@
 #include "gui/Gui.h"
 #include "config.h"
 #include "dictlogo.h"
-enum class ShowType{balloon,main};
+
 class Application
 {
 public:
@@ -39,7 +40,6 @@ private:
 
 namespace DICT{
     extern std::unique_ptr<Application> app;
-    extern std::unique_ptr<Gui> gui;
     extern std::unique_ptr<ShanbayNet> shanbayNet;
     extern std::unique_ptr<Config> cfg;
     extern Dictlogo* logo;
