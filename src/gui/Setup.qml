@@ -3,7 +3,7 @@ import QtQuick.Window 2.2
 Window {
     width: 630
     height: 360
-    flags: Q_OS_WIN ? Qt.Dialog:Qt.WindowStaysOnTopHint
+    //flags: Q_OS_WIN ? Qt.Dialog:Qt.WindowStaysOnTopHint
     SetupForm {
         cb_screentext.onCheckedChanged: {
             cfg.setScreentext(cb_screentext.checked);

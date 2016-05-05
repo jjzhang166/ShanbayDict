@@ -54,6 +54,11 @@ void Gui::init(){
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/main.qml")));
     mainWin = qobject_cast<QWindow*>(engine->rootObjects().at(1));
+#ifdef Q_OS_WIN
+    mainWin->setFlags(Qt::Dialog);
+#else
+    mainWin->setFlags(Qt::WindowStaysOnTopHint);
+#endif
     QObject::connect(mainWin,SIGNAL(signalBtnqueryClick(QString)),
                      this,SIGNAL(signalBtnqueryClick(QString)));
     QObject::connect(this,SIGNAL(signalShowWord(QVariant)),
@@ -77,6 +82,11 @@ void Gui::init(){
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/Setup.qml")));
     setupWin = qobject_cast<QWindow*>(engine->rootObjects().at(3));
+#ifdef Q_OS_WIN
+    setupWin->setFlags(Qt::Dialog);
+#else
+    setupWin->setFlags(Qt::WindowStaysOnTopHint);
+#endif
 
 }
 //loginWin
