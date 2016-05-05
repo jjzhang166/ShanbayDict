@@ -50,8 +50,8 @@ void Config::load(){
     autospeak=settings_->value("autospeak",true).toBool();
     getscreentext=settings_->value("getscreentext",true).toBool();
 #ifdef Q_OS_WIN
-    getclipboardtext=settings->value("getclipboardtext",true).toBool();
-    getselectedtext=settings->value("getselectedtext",false).toBool();
+    getclipboardtext=settings_->value("getclipboardtext",true).toBool();
+    getselectedtext=settings_->value("getselectedtext",false).toBool();
 #else
     getclipboardtext=settings_->value("getclipboardtext",false).toBool();
     getselectedtext=settings_->value("getselectedtext",true).toBool();

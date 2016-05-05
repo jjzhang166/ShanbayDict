@@ -30,7 +30,7 @@
 
 std::unique_ptr<Application> DICT::app = std::make_unique<Application>();
 std::unique_ptr<Gui> DICT::gui = std::make_unique<Gui>();
-std::unique_ptr<ShanbayNet> DICT::shanbayNet = std::make_unique<ShanbayNet>();
+std::unique_ptr<ShanbayNet> DICT::shanbayNet;// = std::make_unique<ShanbayNet>();
 std::unique_ptr<Config> DICT::cfg = std::make_unique<Config>();
 Dictlogo* DICT::logo;
 Application::Application(){
@@ -46,7 +46,7 @@ void Application::init(){
     });
 
     DICT::gui->init();
-
+    DICT::shanbayNet = std::make_unique<ShanbayNet>();
     DICT::shanbayNet->connect();
 
     QObject::connect(DICT::shanbayNet.get(),&ShanbayNet::signalConnectFinished,[&](){
@@ -110,7 +110,7 @@ void Application::init(){
         DICT::gui->addWordRet(showType,data);
     });
 
-    QObject::connect(qApp,&QApplication::aboutToQuit,[&](){close();});
+    //QObject::connect(qApp,&QApplication::aboutToQuit,[&](){close();});
 }
 void Application::close(){
     closeSystrayIcon();
@@ -124,9 +124,14 @@ void Application::showSystrayIcon(){
     showMainWinAction = new QAction(QIcon(":/img/main.ico"),QObject::tr("显示主窗口"),qApp);
     helpAction =new QAction(QIcon(":/img/help.png"),QObject::tr("帮助"),qApp);
     quitAction = new QAction(QIcon(":/img/quit.png"),QObject::tr("退出程序"), qApp);
-    cfgAction=new QAction(QIcon(":/img/setup.ico"),QObject::tr("软件设置"),qApp);
-    autospeakAction=new QAction(QIcon(":/img/speaker.png"),QObject::tr("自动发音"),qApp);
+#ifdef Q_OS_WIN
+    getscreenwordAction=new QAction(QObject::tr("屏幕取词"),qApp);
+    autospeakAction=new QAction(QObject::tr("自动发音"),qApp);
+#else
     getscreenwordAction=new QAction(QIcon(":/img/word.ico"),QObject::tr("屏幕取词"),qApp);
+    autospeakAction=new QAction(QIcon(":/img/speaker.png"),QObject::tr("自动发音"),qApp);
+#endif
+    cfgAction=new QAction(QIcon(":/img/setup.ico"),QObject::tr("软件设置"),qApp);
     aboutAction=new QAction(QIcon(":/img/about.png"),QObject::tr("关于"),qApp);
 
     autospeakAction->setCheckable(true);
@@ -169,7 +174,7 @@ void Application::showSystrayIcon(){
             setScreenText();
         }
     });
-    QObject::connect(quitAction,&QAction::triggered,[&](){qApp->quit();});
+    QObject::connect(quitAction,&QAction::triggered,[&](){close();qApp->quit();});
     QObject::connect(cfgAction,&QAction::triggered,
                      [&](){
        DICT::gui->showSetupWin();

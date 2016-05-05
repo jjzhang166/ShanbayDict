@@ -6,7 +6,7 @@ Window {
     visible: false
     width: 800
     height: 600
-    flags: Qt.WindowStaysOnTopHint //|Qt.Dialog
+    flags: Q_OS_WIN ? Qt.Dialog:Qt.WindowStaysOnTopHint
     property var voc
     signal signalBtnqueryClick(string word)
     signal signalBtnaddwordClick(string type,string id)

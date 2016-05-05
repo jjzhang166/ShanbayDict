@@ -42,7 +42,7 @@ Window {
             signalFreshCaptchaImg();
         }
         checkBox_savepass.onCheckedChanged: {
-            configs.setSavepass(checkBox_savepass.checkedState);
+            cfg.setSavepass(checkBox_savepass.checkedState);
         }
 
         Keys.onPressed: {
