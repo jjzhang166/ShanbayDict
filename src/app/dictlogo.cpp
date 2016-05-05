@@ -1,32 +1,23 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Jeffrey Lee.
+** Copyright (C) 2016 lieefu Way.
 ** All rights reserved.
-** Contact: vipjeffreylee@gmail.com
+** Contact: lieefu@gmail.com
 **
 ** This file is part of the ShanbayDict.
 **
 ** $BEGIN_LICENSE:LGPL$
+**
 ** GNU Lesser General Public License Usage
 ** This file may be used under the terms of the GNU Lesser General Public
-** License version 2.1 as published by the Free Software Foundation and
-** appearing in the file LICENSE.LGPL included in the packaging of this
+** License version 3 as published by the Free Software Foundation and
+** appearing in the file LICENSE included in the packaging of this
 ** file. Please review the following information to ensure the GNU Lesser
-** General Public License version 2.1 requirements will be met:
-** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU General
-** Public License version 3.0 as published by the Free Software Foundation
-** and appearing in the file LICENSE.GPL included in the packaging of this
-** file. Please review the following information to ensure the GNU General
-** Public License version 3.0 requirements will be met:
-** http://www.gnu.org/copyleft/gpl.html.
-**
-**
+** General Public License version 3 requirements will be met:
+** http://www.gnu.org/licenses/lgpl.html.
 **
 ** $END_LICENSE$
-**
+**                                                    2016/5/5
 ****************************************************************************/
 #include "dictlogo.h"
 
