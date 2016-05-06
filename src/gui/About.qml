@@ -5,7 +5,7 @@ Window {
     width: 630
     height: 360
     visible: false
-    title: cfg.getVersion()
+    title: qsTr("扇贝词典")
     flags: Qt.Dialog
     AboutForm {
         labelAbout.text: cfg.getLicenceInfo()
