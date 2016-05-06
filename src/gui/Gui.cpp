@@ -82,12 +82,15 @@ void Gui::init(){
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/Setup.qml")));
     setupWin = qobject_cast<QWindow*>(engine->rootObjects().at(3));
+
 #ifdef Q_OS_WIN
     setupWin->setFlags(Qt::Dialog);
 #else
     setupWin->setFlags(Qt::WindowStaysOnTopHint);
 #endif
 
+    engine->load(QUrl(QStringLiteral("qrc:/src/gui/About.qml")));
+    aboutWin = qobject_cast<QWindow*>(engine->rootObjects().at(4));
 }
 //loginWin
 void Gui::showCaptchaImg(const QString &url){
@@ -132,4 +135,8 @@ void Gui::registerClick(){
 
 void Gui::showSetupWin(){
     setupWin->show();
+}
+
+void Gui::showAboutWin(){
+    aboutWin->show();
 }

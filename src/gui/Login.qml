@@ -3,7 +3,7 @@ import QtQuick.Window 2.2
 Window {
     id: window
     visible: false
-    title:"ShanbayDict 2.0 Login Dialog"
+    title: cfg.getVersion()
     width:520
     height:loginForm.height
     objectName: "Login Window"

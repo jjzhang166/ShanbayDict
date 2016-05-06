@@ -122,7 +122,7 @@ void Application::showSystrayIcon(){
     dictMenu = new QMenu("菜单");
     //dictMenu->setLayoutDirection(Qt::LeftToRight);
     showMainWinAction = new QAction(QIcon(":/img/main.ico"),QObject::tr("显示主窗口"),qApp);
-    helpAction =new QAction(QIcon(":/img/help.png"),QObject::tr("帮助"),qApp);
+    //helpAction =new QAction(QIcon(":/img/help.png"),QObject::tr("帮助"),qApp);
     quitAction = new QAction(QIcon(":/img/quit.png"),QObject::tr("退出程序"), qApp);
 #ifdef Q_OS_WIN
     getscreenwordAction=new QAction(QObject::tr("屏幕取词"),qApp);
@@ -140,7 +140,7 @@ void Application::showSystrayIcon(){
     getscreenwordAction->setChecked(DICT::cfg->isGetscreentext());
 
     dictMenu->addAction(showMainWinAction);
-    dictMenu->addAction(helpAction);
+    //dictMenu->addAction(helpAction);
     dictMenu->addAction(getscreenwordAction);
     dictMenu->addAction(autospeakAction);
     dictMenu->addAction(cfgAction);
@@ -174,6 +174,8 @@ void Application::showSystrayIcon(){
             setScreenText();
         }
     });
+
+    QObject::connect(aboutAction,&QAction::triggered,[&](){DICT::gui->showAboutWin();});
     QObject::connect(quitAction,&QAction::triggered,[&](){close();qApp->quit();});
     QObject::connect(cfgAction,&QAction::triggered,
                      [&](){

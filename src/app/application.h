@@ -55,7 +55,7 @@ private:
     QAction *autospeakAction;
     QAction *quitAction;
     QAction *aboutAction;
-    QAction *helpAction;
+    //QAction *helpAction;
 };
 
 namespace DICT{

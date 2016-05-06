@@ -10,5 +10,7 @@
         <file>src/gui/WinInfo.qml</file>
         <file>src/gui/Setup.qml</file>
         <file>src/gui/SetupForm.ui.qml</file>
+        <file>src/gui/About.qml</file>
+        <file>src/gui/AboutForm.ui.qml</file>
     </qresource>
 </RCC>

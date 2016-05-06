@@ -6,6 +6,7 @@ Window {
     visible: false
     width: 800
     height: 600
+    title: cfg.getVersion()
     //flags: Q_OS_WIN ? Qt.Dialog:Qt.WindowStaysOnTopHint
     //flags: Qt.Dialog
     property var voc

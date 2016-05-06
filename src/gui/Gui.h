@@ -65,10 +65,13 @@ public:
     void showWordInBalloon(const QString& wordinfo);
 
     void showSetupWin();
+
+    void showAboutWin();
     QWindow* loginWin;
     QWindow* mainWin;
     QWindow* balloonWin;
     QWindow* setupWin;
+    QWindow* aboutWin;
 private:
     QQmlApplicationEngine *engine;
 
