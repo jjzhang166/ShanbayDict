@@ -56,6 +56,8 @@ public:
     void showCaptchaImg(const QString& url);
     void setLoginWinState(const QString& str);
     void showMainWin();
+    void hideMainWin();
+    bool mainWinIsVisible();
 
     void showWord(const QString& wordinfo);
     void addWordRet(const ShowType type,const QString& data);

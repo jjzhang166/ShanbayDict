@@ -187,7 +187,11 @@ void Application::showSystrayIcon(){
         case QSystemTrayIcon::Trigger:
         case QSystemTrayIcon::DoubleClick:
             qDebug()<<"DoubleClick";
-            DICT::gui->showMainWin();
+            if(DICT::gui->mainWinIsVisible()){
+                DICT::gui->hideMainWin();
+            }else{
+                DICT::gui->showMainWin();
+            }
             break;
         case QSystemTrayIcon::MiddleClick:
             qDebug()<<"MiddleClick";

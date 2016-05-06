@@ -6,7 +6,7 @@ Window {
     visible: false
     width: 360
     height: 180
-    flags: Qt.SplashScreen
+    flags: Qt.WindowStaysOnTopHint|Qt.SplashScreen
     objectName: "balloon"
     property var voc    
     signal signalBtnaddwordClick(string type,string id)
@@ -15,17 +15,16 @@ Window {
         console.log(" add word ret"+retstr);
         var json=JSON.parse(retstr);
         if(json.status_code !== 0 ){
-            mainForm.word_name.text = "添加新词失败：" + json.msg;
-            winInfo.text = "添加新词失败：" + json.msg;
-            winInfo.showinfo("添加新词失败：" + json.msg);
+            var infostr = qsTr("添加新词失败：") + json.msg;
+            mainForm.word_name.text = infostr;
+            winInfo.showinfo(infostr);
             return;
         }
         updateBtnaddword(json.data.id);
-        winInfo.showinfo(voc.content+"  已加入扇贝网生词本,列入背单词计划。");
+        winInfo.showinfo(voc.content+qsTr("  已加入扇贝网生词本,列入背单词计划。"));
     }
     function showWord(wordstr){
-        window.requestActivate();
-        //console.log("wordstr:"+wordstr);
+        window.requestActivate();        //console.log("wordstr:"+wordstr);
         var json = JSON.parse(wordstr);
         if(json.status_code !== 0 ){
             mainForm.word_name.text = json.msg;
@@ -54,9 +53,8 @@ Window {
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
         }
         mainForm.text_def.text =voc.definition;
-
         window.width = Math.max(mainForm.rowLayout_pronu.width + 20,360);
-        window.height = Math.max(mainForm.text_def.height + 100,180);
+        window.height = Math.max(mainForm.text_def.height + 100,90);
     }
     function updateBtnaddword(learning_id){
         if(learning_id&&learning_id!==0){
@@ -101,5 +99,6 @@ Window {
         id: winInfo
         visible: false
     }
+
 }
 

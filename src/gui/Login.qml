@@ -7,13 +7,14 @@ Window {
     width:520
     height:loginForm.height
     objectName: "Login Window"
+    flags: Qt.Dialog
     signal signalLoginClick(string name,string pass,string captchacode)
     signal signalFreshCaptchaImg()
     signal signalRegisterClick()
     function setState(msg) {
         //console.log("QML received: " + msg);
         if(msg.indexOf("请登录")>0) loginForm.btn_login.enabled = true;
-        loginForm.captcha_code.text = "";
+        loginForm.captcha_code.text = qsTr("");
         winInfo.visible = true;
         winInfo.text = msg;
     }

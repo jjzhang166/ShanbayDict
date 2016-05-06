@@ -16,9 +16,9 @@ Window {
         console.log(" add word ret"+retstr);
         var json=JSON.parse(retstr);
         if(json.status_code !== 0 ){
-            mainForm.word_name.text = "添加新词失败：" + json.msg;
-            winInfo.text = "添加新词失败：" + json.msg;
-            winInfo.showinfo("添加新词失败：" + json.msg);
+            var infostr = qsTr("添加新词失败：") + json.msg;
+            mainForm.word_name.text = infostr;
+            winInfo.showinfo(infostr);
             return;
         }
         updateBtnaddword(json.data.id);

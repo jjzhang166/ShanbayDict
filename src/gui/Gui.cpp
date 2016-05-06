@@ -101,6 +101,12 @@ void Gui::showMainWin(){
     //mainWin->hide();
     mainWin->showNormal();
 }
+void Gui::hideMainWin(){
+    mainWin->hide();
+}
+bool Gui::mainWinIsVisible(){
+    return mainWin->isVisible();
+}
 
 void Gui::showWord(const QString &wordinfo){
     emit signalShowWord(wordinfo);

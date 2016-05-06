@@ -82,6 +82,7 @@ Rectangle {
         width: parent.width -15
         //height: 77
         text: qsTr("word definition")
+        font.bold: true
         anchors.rightMargin: -8
         anchors.bottomMargin: -48
         anchors.leftMargin: 8
@@ -90,5 +91,4 @@ Rectangle {
         wrapMode: Text.WrapAnywhere
         font.pixelSize: 15
     }
-
 }

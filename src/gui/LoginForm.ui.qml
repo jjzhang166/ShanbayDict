@@ -30,7 +30,7 @@ Item {
         y: 60
         width: 180
         height: 40
-        text: ""
+        text: qsTr("")
         font.bold: true
         font.pointSize: 12
         placeholderText: qsTr("用户名或邮箱")
