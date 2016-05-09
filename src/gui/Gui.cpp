@@ -35,7 +35,7 @@ void Gui::init(){
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/Login.qml")));
     loginWin = qobject_cast<QWindow*>(engine->rootObjects().at(0));
-
+    loginWin->setIcon(QIcon(":/img/logo.png"));
 
     //loginWin->setFlags(Qt::FramelessWindowHint);
     //qDebug()<<engine.rootObjects().size()<<loginWin->objectName();
@@ -54,6 +54,7 @@ void Gui::init(){
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/main.qml")));
     mainWin = qobject_cast<QWindow*>(engine->rootObjects().at(1));
+    mainWin->setIcon(QIcon(":/img/logo.png"));
 #ifdef Q_OS_WIN
     mainWin->setFlags(Qt::Dialog);
 #else
@@ -82,7 +83,7 @@ void Gui::init(){
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/Setup.qml")));
     setupWin = qobject_cast<QWindow*>(engine->rootObjects().at(3));
-
+    setupWin->setIcon(QIcon(":/img/logo.png"));
 #ifdef Q_OS_WIN
     setupWin->setFlags(Qt::Dialog);
 #else

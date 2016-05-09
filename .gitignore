@@ -1,3 +1,4 @@
+*.user
 # C++ objects and libs
 *~
 *.slo
