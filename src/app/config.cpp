@@ -20,17 +20,13 @@
 **                                                    2016/5/5
 ****************************************************************************/
 #include "config.h"
-#include <iostream>
 #include <QApplication>
 Config::Config(QObject *parent) :QObject(parent)
 {
-    std::cout<<"config load"<<std::endl;
     settings_=new QSettings("shanbay.ini",QSettings::IniFormat);
     load();
 }
 Config::~Config(){
-    std::cout<<"config close"<<settings_->fileName().toStdString()<<std::endl;
-    //settings->sync();
     save();
     settings_->deleteLater();
 }

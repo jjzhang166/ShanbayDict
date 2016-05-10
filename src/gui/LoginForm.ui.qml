@@ -49,7 +49,7 @@ Item {
 
     TextField {
         id: password
-        x: 314
+        x: 326
         y: 60
         width: 180
         height: 41
