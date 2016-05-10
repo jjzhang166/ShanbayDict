@@ -11,4 +11,9 @@ Window {
         labelAbout.text: cfg.getLicenceInfo()
         labelAbout.onLinkActivated: Qt.openUrlExternally(link)
     }
+    onClosing:{
+        //console.log("main windows is closing");
+        visible = false;
+        close.accepted = false;
+    }
 }

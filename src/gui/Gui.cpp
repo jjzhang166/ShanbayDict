@@ -92,6 +92,7 @@ void Gui::init(){
 
     engine->load(QUrl(QStringLiteral("qrc:/src/gui/About.qml")));
     aboutWin = qobject_cast<QWindow*>(engine->rootObjects().at(4));
+    aboutWin->setIcon(QIcon(":/img/logo.png"));
 }
 //loginWin
 void Gui::showCaptchaImg(const QString &url){
