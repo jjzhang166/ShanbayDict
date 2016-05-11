@@ -38,7 +38,15 @@ INCLUDE_DIRECTORIES(./src)
 aux_source_directory(./src/app SRC_LIST)
 aux_source_directory(./src/gui SRC_LIST)
 aux_source_directory(./src/net SRC_LIST)
-add_executable(${PROJECT_NAME} ${SRC_LIST} qml.qrc icons.qrc app.rc)
+# Set some Win32 Specific Settings
+IF(WIN32)
+SET(GUI_TYPE WIN32)
+ENDIF(WIN32)
+# Set some Apple MacOS Specific settings
+IF (APPLE)
+SET(GUI_TYPE MACOSX_BUNDLE)
+ENDIF (APPLE)
+add_executable(${PROJECT_NAME} ${GUI_TYPE} ${SRC_LIST} qml.qrc icons.qrc app.rc)
 
 if(UNIX)
     set(LINK_FLAGS "-lpthread -ldl -lgmp")
