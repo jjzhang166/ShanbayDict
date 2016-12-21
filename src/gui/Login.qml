@@ -13,7 +13,7 @@ Window {
     signal signalRegisterClick()
     function setState(msg) {
         //console.log("QML received: " + msg);
-        if(msg.indexOf("请登录")>0) loginForm.btn_login.enabled = true;
+        if(msg.indexOf("已连接扇贝网")>=0) loginForm.btn_login.enabled = true;
         loginForm.captcha_code.text = qsTr("");
         winInfo.visible = true;
         winInfo.text = msg;
@@ -60,7 +60,7 @@ Window {
                     return;
                 }
             }
-            signalLoginClick(username.text,password.text,captcha_code.text);
+            if(loginForm.btn_login.enabled) signalLoginClick(username.text,password.text,captcha_code.text);
         }
     }
    WinInfo{
