@@ -55,6 +55,7 @@ Rectangle {
         Text {
             id: word_name
             text: qsTr("Text")
+            font.family: "Courier"
             style: Text.Normal
             font.bold: true
             color:'#209e85'
@@ -64,16 +65,17 @@ Rectangle {
         Text {
             visible: pronu_us.visible
             text: qsTr("UK:")
-            font.italic: true
+            font.italic: false
             font.bold: false
-            font.pixelSize: 12
+            font.pixelSize: 15
         }
         Text {
             id: pronu_uk
             visible: pronu_us.visible
             color: "gray"
             text: qsTr("/ɡʊd/")
-            font.pixelSize: 12
+            font.family: "Courier"
+            font.pixelSize: 15
         }
         ToolButton {
             id: btn_sound0
@@ -84,16 +86,16 @@ Rectangle {
         Text {
             visible: pronu_us.visible
             text: qsTr("US:")
-            font.italic: true
-            font.bold: true
-            font.pixelSize: 12
+            font.italic: false
+            font.bold: false
+            font.pixelSize: 15
         }
         Text {
             id: pronu_us
             color: "gray"
             text: qsTr("/ɡʊd/")
-            font.bold: true
-            font.pixelSize: 12
+            font.family: "Courier"
+            font.pixelSize: 15
         }
         ToolButton {
             id: btn_sound1
