@@ -9,7 +9,7 @@ Text {
     anchors.bottom: parent.bottom
     style: Text.Normal
     font.bold: true
-    font.pointSize: 12
+    font.pointSize: 11
     function showinfo(msg){
         text = msg;
         visible = true;

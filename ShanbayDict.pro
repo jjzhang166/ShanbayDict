@@ -17,7 +17,7 @@ QML_IMPORT_PATH =
 
 INCLUDEPATH += src
 SOURCES += \
-    src/app/main.cpp \
+    src/main.cpp \
     src/net/shanbaynet.cpp \
     src/app/application.cpp \
     src/gui/Gui.cpp \

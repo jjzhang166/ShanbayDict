@@ -4,8 +4,8 @@ import QtMultimedia 5.6
 Window {
     id: window
     visible: false
-    width: 800
-    height: 600
+    width: 700
+    height: 390
     title: cfg.getVersion()
     //flags: Q_OS_WIN ? Qt.Dialog:Qt.WindowStaysOnTopHint
     //flags: Qt.Dialog
@@ -23,7 +23,7 @@ Window {
             return;
         }
         updateBtnaddword(json.data.id);
-        winInfo.showinfo(voc.content+"  已经加入你的扇贝网生词本，列入背单词计划。");
+        winInfo.showinfo(voc.content+"  已经加入扇贝网生词本，列入背单词计划。");
     }
     function updateBtnaddword(learning_id){
         if(learning_id&&learning_id!==0){
@@ -41,8 +41,9 @@ Window {
         if(json.status_code !== 0 ){
             mainForm.word_name.text = json.msg;
             mainForm.btn_addword.visible = false;
-            mainForm.pronu_uk.visible = false;
+            mainForm.pronu_us.visible = false;
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
+            mainForm.text_def.text = "";
             return;
         }
         mainForm.textWord.text = "";
@@ -62,16 +63,16 @@ Window {
         }else{
             mainForm.btn_sound0.visible = mainForm.btn_sound1.visible = false;
         }
-        var def_en_info = "<table style='background-Color:mintcream' cellSpacing=6>";
+        var def_en_info = "<table style='background-Color:mintcream' cellSpacing=1>";
         for(var pos in voc.en_definitions){
             //console.log(pos);
-            def_en_info += "<tr><td align='right'><b>"+pos +":<b></td><td>";
+            def_en_info += "<tr><td align='right'>"+pos +"</td><td><ol>";
             var defs=voc.en_definitions[pos];
             for(var i=0;i<defs.length;i++){
-                def_en_info += "<b>"+(i+1) + ".</b>" + defs[i] +"<br>";
+                def_en_info += "<li>" + defs[i] +"</li>";
             }
-            def_en_info = def_en_info.substring(0,def_en_info.length-4);
-            def_en_info+="</td></tr>"
+            //def_en_info = def_en_info.substring(0,def_en_info.length-4);
+            def_en_info+="</ol></td></tr>"
             //console.log(def_en_info);
         }
         def_en_info+="</table>"
@@ -93,7 +94,7 @@ Window {
 
         MainForm {
             id: mainForm
-            width:  text_def.width + 20
+            width:  window.width //text_def.width + 20
             height: text_def.height + 100
             btn_query.onClicked: {
                 winInfo.hide();

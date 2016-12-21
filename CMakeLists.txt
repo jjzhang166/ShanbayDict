@@ -35,6 +35,7 @@ endif(CMAKE_BUILD_TYPE STREQUAL "Debug" )
 message("Build Type:" ${CMAKE_BUILD_TYPE} ${CMAKE_CXX_FLAGS})
 
 INCLUDE_DIRECTORIES(./src)
+aux_source_directory(./src SRC_LIST)
 aux_source_directory(./src/app SRC_LIST)
 aux_source_directory(./src/gui SRC_LIST)
 aux_source_directory(./src/net SRC_LIST)
@@ -56,7 +57,7 @@ INSTALL(TARGETS ${PROJECT_NAME} DESTINATION dict)
 
 INCLUDE(InstallRequiredSystemLibraries)
 
-SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "ShanbayDict 2.0.0")
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "ShanbayDict 2.0.1")
 SET(CPACK_PACKAGE_VENDOR "Lieefu Way")
 SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")

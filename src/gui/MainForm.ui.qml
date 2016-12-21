@@ -15,9 +15,6 @@ Rectangle {
     property alias pronu_uk: pronu_uk
     property alias pronu_us: pronu_us
     //anchors.fill: parent
-
-    radius: 2
-
     //color: "#ffffff"
     TextField {
         id: textWord
@@ -113,9 +110,9 @@ Rectangle {
     }
     Text {
         id: text_def
-        x: 8
+        x: 10
         y: 95
-        width: 780
+        width: parent.width - 20
         //height: 77
         text: qsTr("word definition")
         clip: false

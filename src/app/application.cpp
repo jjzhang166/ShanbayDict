@@ -54,7 +54,7 @@ void Application::init(){
             DICT::gui->setLoginWinState("无法连接扇贝网，请稍后重试");
             return;
         }
-        DICT::gui->setLoginWinState("已连接扇贝网，请登录!");
+        DICT::gui->setLoginWinState("已连接扇贝网，请输入用户名和密码登录!");
     });
     QObject::connect(DICT::shanbayNet.get(),&ShanbayNet::signalShowCaptcha,
                      [&](){
@@ -201,7 +201,7 @@ void Application::showSystrayIcon(){
         default:;
         }
     });
-    trayIcon->setToolTip("扇贝词典 2.0");
+    trayIcon->setToolTip(QObject::tr("扇贝词典 %1").arg(DICT::cfg->getVersion().toString()));
     trayIcon->show();
 }
 void Application::closeSystrayIcon(){
@@ -237,7 +237,9 @@ void Application::setScreenText(){
             QObject::connect(qApp->clipboard(),&QClipboard::selectionChanged,
                              [&](){
                 qDebug()<<"selectionChanged"<< qApp->clipboard()->mimeData(QClipboard::Selection)->hasText()<<qApp->clipboard()->text(QClipboard::Selection);
+                qDebug()<< (qApp->mouseButtons() & Qt::LeftButton);
                 captureText(qApp->clipboard()->text(QClipboard::Selection));
+
             });
 
         }else{
@@ -248,6 +250,7 @@ void Application::setScreenText(){
         QObject::connect(qApp->clipboard(),&QClipboard::dataChanged,
                          [&](){
             qDebug()<<"dataChanged"<<qApp->clipboard()->mimeData(QClipboard::Clipboard)->hasText()<<qApp->clipboard()->text();
+
             captureText(qApp->clipboard()->text());
         });
     }else{

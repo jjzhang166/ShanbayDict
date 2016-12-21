@@ -37,21 +37,25 @@ Dictlogo::Dictlogo(QWidget *parent) :
 }
 void Dictlogo::popup(){
     timer->stop();
-    setWindowOpacity(qreal(0.9));
-    move(QCursor::pos()-QPoint(36,46));
-    show();
+    if(this->isHidden()){
+        //setWindowOpacity(qreal(0.9));
+        move(QCursor::pos()-QPoint(36,46));
+        show();
+    }
     timercount=0.9;
-    timer->start(500);
+    timer->start(200);
 }
 void Dictlogo::autohide(){
     if(!this->rect().contains(this->mapFromGlobal(QCursor::pos()))){
-        this->setWindowOpacity(timercount);
+        mousein=false;
         if(timercount<0){
             timer->stop();
             this->hide();
+            return;
         }
+        this->setWindowOpacity(timercount);
         timercount-=0.1;
-        mousein=false;
+
     }else{
         if(!mousein){
             mousein=true;
