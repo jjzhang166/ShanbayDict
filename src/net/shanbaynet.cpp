@@ -26,7 +26,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <src/app/application.h>
-const QByteArray user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36";
+const QByteArray user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 ShanbayNet::ShanbayNet(QObject *parent) :
     QObject(parent)
 {
@@ -45,7 +45,8 @@ void ShanbayNet::connect(){
 
 void ShanbayNet::getSessionid(){
     QNetworkRequest request;
-    request.setUrl(QUrl("http://www.shanbay.com/accounts/login/"));
+    request.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+    request.setUrl(QUrl("http://www.shanbay.com/web/account/login"));
     request.setRawHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
     request.setRawHeader("Accept-Charset","GBK,utf-8;q=0.7,*;q=0.3");
     //request.setRawHeader("Accept-Encoding","gzip,deflate,sdch");
@@ -59,7 +60,7 @@ void ShanbayNet::getSessionid(){
 }
 void ShanbayNet::refreshCaptchaImg(){
     QNetworkRequest request;
-    request.setUrl(QUrl("http://www.shanbay.com/accounts/captcha/?_=1461216788708"));
+    request.setUrl(QUrl("http://www.shanbay.com/api/v1/account/captcha/"));
     request.setRawHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
     request.setRawHeader("Accept-Charset","GBK,utf-8;q=0.7,*;q=0.3");
     //request.setRawHeader("Accept-Encoding","gzip,deflate,sdch");
@@ -182,7 +183,7 @@ void ShanbayNet::login(const QString &u,const QString &p,const QString &c){
 }
 void ShanbayNet::loginShanbay(){
     QNetworkRequest request;
-    request.setUrl(QUrl("http://www.shanbay.com/accounts/login/"));
+    request.setUrl(QUrl("http://www.shanbay.com/api/v1/account/login/web/"));
     request.setRawHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
     request.setRawHeader("Accept-Charset","GBK,utf-8;q=0.7,*;q=0.3");
     //request.setRawHeader("Accept-Encoding","gzip,deflate,sdch");
@@ -192,20 +193,23 @@ void ShanbayNet::loginShanbay(){
     request.setRawHeader("Host","www.shanbay.com");
     request.setRawHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.63 Safari/535.7");
     request.setRawHeader("Origin","http//www.shanbay.com");
-    request.setRawHeader("Referer","http://www.shanbay.com/accounts/login/");
+    request.setRawHeader("Referer","http://www.shanbay.com/web/account/login");
     request.setRawHeader("Host","www.shanbay.com");
     request.setRawHeader("Content-Type","application/x-www-form-urlencoded");
+    request.setRawHeader("X-CSRFToken","null");
+
     QByteArray postData;
-    postData.append(QString("csrfmiddlewaretoken=%1&").arg(sessionid));
+    //postData.append(QString("csrfmiddlewaretoken=%1&").arg(sessionid));
     postData.append(QString("username=%1&password=%2&").arg(QUrl::toPercentEncoding(username).constData()).arg(password));
     if(captcha.isneed()){
-        postData.append(QString("captcha_0=%1&captcha_1=%2&").arg(captcha.id).arg(captcha.code));
+        postData.append(QString("key=%1&code=%2").arg(captcha.id).arg(captcha.code));
     }
     //qDebug()<<QString("username=%1&password=%2&").arg(QUrl::toPercentEncoding(username).constData()).arg(password);
-    postData.append("login=登录&continue=home&u=1&next=");
+    //postData.append("login=登录&continue=home&u=1&next=");
+    qDebug()<<"post data:"<<postData;
     request.setHeader(QNetworkRequest::ContentLengthHeader,postData.size());
     httpAction=HttpAction::LoginAction;
-    http->post(request,postData);
+    http->put(request,postData);
 }
 void ShanbayNet::Captcha::parseHtml(const QString& html){
     clear();
@@ -219,21 +223,22 @@ void ShanbayNet::Captcha::parseHtml(const QString& html){
 }
 
 void ShanbayNet::httpfinished(QNetworkReply* reply){
-    //        if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString().isEmpty()){
-    //            qDebug()<<QString::fromUtf8(reply->readAll());
-    //        }
+    if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString().isEmpty()){
+        qDebug()<<QString::fromUtf8(reply->readAll());
+    }
     //qDebug()<<QString::fromUtf8(reply->readAll());
-    //qDebug()<<"Http request finished!"<<reply->error()<<reply->errorString()<<reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString()<<reply->url();
+    qDebug()<<"Http request finished!"<<reply->error()<<reply->errorString()<<reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString()<<reply->url();
     QJsonDocument jsonDoc;
     QJsonObject jsonObj,vocObj,en_definitionsObj;
     QString html;
     QByteArray replData=reply->readAll();
+    sessionid=getCookie("csrftoken");
     switch(httpAction){
     case HttpAction::NoAction:
         break;
     case HttpAction::GetSessionidAction:
         sessionid=getCookie("csrftoken");
-        //qDebug()<<"sessionid="<<sessionid<<reply->readAll();
+        //qDebug()<<"sessionid="<<sessionid<<replData;
         if(sessionidOk()){
             this->state = NetState::login;
             html=QString::fromUtf8(replData);
@@ -248,29 +253,45 @@ void ShanbayNet::httpfinished(QNetworkReply* reply){
     case HttpAction::RefreshCaptchaImg:
         html=QString::fromUtf8(replData);
         //qDebug()<<html;
-        captcha.parseHtml(html);
-        emit signalShowCaptcha();
+        //captcha.parseHtml(html);
+        jsonDoc=QJsonDocument::fromJson(replData);
+        if(!jsonDoc.isNull()){
+            jsonObj=jsonDoc.object();
+            jsonObj=jsonObj.value("data").toObject();
+            captcha.id = jsonObj.value("key").toString();
+            captcha.url = jsonObj.value("image_url").toString();
+            emit signalShowCaptcha();
+        }
         break;
     case HttpAction::LoginAction:
         httpAction=HttpAction::NoAction;
         html=QString::fromUtf8(replData);
-        if(0==html.size()){
-            nickname=QUrl::fromPercentEncoding(getCookie("nickname").toLatin1());
+        qDebug()<<html;
+        jsonDoc=QJsonDocument::fromJson(replData);
+        if(jsonDoc.isNull()){
+            nickname=QUrl::fromPercentEncoding(getCookie("username").toLatin1());
             qDebug()<<"Login OK!nickname="<<nickname;
             state=NetState::ok;
             emit signalLoginFinished(true,"登录成功");
         }else{
-            qDebug()<<"Login failed!";
-            //qDebug()<<html<<"验证码错误 pos:"<<html.indexOf("验证码错误");
-            captcha.parseHtml(html);
-            if(captcha.isneed()){
-                emit signalShowCaptcha();
-            }
-            if(html.indexOf("请输入正确的用户名或注册邮箱和密码")>-1){
-                emit signalLoginFinished(false,"请输入正确的用户名或注册邮箱和密码");
+            jsonObj = jsonDoc.object();
+            if(jsonObj.value("status_code").toInt()==0){
+                emit signalLoginFinished(true,"登录成功");
             }else{
-                emit signalLoginFinished(false,"验证码错误");
+                refreshCaptchaImg();
             }
+
+            //            qDebug()<<"Login failed!";
+            //            //qDebug()<<html<<"验证码错误 pos:"<<html.indexOf("验证码错误");
+            //            captcha.parseHtml(html);
+            //            if(captcha.isneed()){
+            //                emit signalShowCaptcha();
+            //            }
+            //            if(html.indexOf("请输入正确的用户名或注册邮箱和密码")>-1){
+            //                emit signalLoginFinished(false,"请输入正确的用户名或注册邮箱和密码");
+            //            }else{
+            //                emit signalLoginFinished(false,"验证码错误");
+            //            }
         }
         break;
     case HttpAction::QueryWordAction:
@@ -370,15 +391,15 @@ void ShanbayNet::httpfinished(QNetworkReply* reply){
         //qDebug()<<"add word_____________"<<QString::fromUtf8(reply->readAll());
 
 
-//        jsonDoc=QJsonDocument::fromJson(replData);
-//        if(!jsonDoc.isNull()){
-//            jsonObj=jsonDoc.object();
-//            //qDebug()<<"jsonObj"<<jsonObj;
-//            DICT::word->learning_id=QString::number(jsonObj.value("id").toDouble(),'g',15);
-//            qDebug()<<jsonObj.value("id").toDouble()<<"add word result learning id="<<DICT::word->learning_id<< (DICT::word->learning_id!="0");
-//            emit signalAddwordFinished(DICT::word->learning_id!="0");
-//            queryExamples(DICT::word->learning_id);
-//        }
+        //        jsonDoc=QJsonDocument::fromJson(replData);
+        //        if(!jsonDoc.isNull()){
+        //            jsonObj=jsonDoc.object();
+        //            //qDebug()<<"jsonObj"<<jsonObj;
+        //            DICT::word->learning_id=QString::number(jsonObj.value("id").toDouble(),'g',15);
+        //            qDebug()<<jsonObj.value("id").toDouble()<<"add word result learning id="<<DICT::word->learning_id<< (DICT::word->learning_id!="0");
+        //            emit signalAddwordFinished(DICT::word->learning_id!="0");
+        //            queryExamples(DICT::word->learning_id);
+        //        }
         //qDebug()<<QString::fromUtf8(reply->readAll());
         break;
     default:
@@ -390,12 +411,13 @@ void ShanbayNet::httpfinished(QNetworkReply* reply){
 
 }
 QString ShanbayNet::getCookie(const QString &name){
-    //qDebug()<<"get cookie";
-    foreach(QNetworkCookie cookie , http->cookieJar()->cookiesForUrl(QUrl("http://www.shanbay.com/"))){
-        //qDebug()<<cookie.name();
+    qDebug()<<"get cookie";
+    foreach(QNetworkCookie cookie , http->cookieJar()->cookiesForUrl(QUrl("http://www.shanbay.com"))){
+        qDebug()<<cookie.name();
+
         if(cookie.name()==name){
             return cookie.value();
         }
     }
-    return "";
+    return "RXzZWH51azvrCOFXkFnuJeSZO1B2cOB0";
 }

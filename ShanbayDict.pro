@@ -3,7 +3,7 @@ TEMPLATE = app
 
 QT += widgets qml multimedia
 CONFIG += c++14
-CONFIG += static
+#CONFIG += static
 RESOURCES += qml.qrc icons.qrc
 RC_FILE = app.rc
 
